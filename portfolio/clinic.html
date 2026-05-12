@@ -1,0 +1,604 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>MAISON ROSÉE · Quietly Radiant Skin · Aesthetic Atelier</title>
+<meta name="description" content="A discreet aesthetic studio. Twelve treatments. One philosophy: less, but precise." />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=League+Spartan:wght@300;400;500;700;800;900&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #fdf8f3;
+    --bg-2: #f5f0eb;
+    --accent: #e4a4bd;
+    --text: #262626;
+    --line: rgba(38, 38, 38, 0.08);
+    --line-soft: rgba(38, 38, 38, 0.05);
+    --ease: cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: 'League Spartan', system-ui, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.55;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+  }
+  img { display: block; max-width: 100%; }
+  a { color: inherit; text-decoration: none; }
+  ::selection { background: var(--accent); color: var(--text); }
+
+  .container { max-width: 1440px; margin: 0 auto; padding: 0 48px; }
+
+  /* Utility label */
+  .label {
+    font-size: 10px; font-weight: 900;
+    letter-spacing: 0.4em; text-transform: uppercase;
+    color: var(--text);
+  }
+  .label-pink { color: var(--accent); }
+
+  /* Glass Nav */
+  .nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 50;
+    height: 80px;
+    background: rgba(253, 248, 243, 0.8);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-bottom: 1px solid rgba(38, 38, 38, 0.05);
+    display: flex; align-items: center;
+  }
+  .nav-inner {
+    display: flex; align-items: center; justify-content: space-between;
+    width: 100%; max-width: 1440px; margin: 0 auto; padding: 0 48px;
+    gap: 24px;
+  }
+  .nav-brand {
+    font-weight: 900; font-size: 18px;
+    letter-spacing: 0.08em; text-transform: uppercase;
+  }
+  .nav-links {
+    display: flex; gap: 40px; list-style: none;
+  }
+  .nav-links a {
+    font-size: 10px; font-weight: 900;
+    letter-spacing: 0.2em; text-transform: uppercase;
+    transition: color .4s var(--ease);
+  }
+  .nav-links a:hover { color: var(--accent); }
+  .nav-cta {
+    background: var(--accent); color: var(--text);
+    padding: 12px 32px; border-radius: 999px;
+    font-size: 10px; font-weight: 900;
+    letter-spacing: 0.2em; text-transform: uppercase;
+    transition: transform .5s var(--ease), background .5s var(--ease);
+  }
+  .nav-cta:hover { background: var(--text); color: var(--bg); transform: translateY(-2px); }
+
+  /* Hero */
+  .hero {
+    min-height: 100vh; padding: 140px 0 80px;
+    display: flex; align-items: center;
+  }
+  .hero-grid {
+    display: grid; grid-template-columns: 1.1fr 1fr; gap: 80px; align-items: center;
+  }
+  .hero-h1 {
+    font-size: 15vw; font-weight: 900;
+    line-height: 0.8; letter-spacing: -0.05em;
+    text-transform: lowercase;
+  }
+  .hero-h1 .it {
+    font-style: italic; font-weight: 500;
+    color: var(--accent);
+  }
+  .hero-body {
+    margin-top: 48px; max-width: 480px;
+    font-size: 22px; line-height: 1.5;
+    color: rgba(38, 38, 38, 0.7); font-weight: 400;
+  }
+  .hero-cta {
+    display: inline-flex; align-items: center; gap: 12px;
+    margin-top: 40px;
+    font-size: 14px; font-weight: 700;
+    letter-spacing: 0.16em; text-transform: uppercase;
+    border-bottom: 2px solid var(--accent); padding-bottom: 8px;
+    transition: gap .4s var(--ease), color .4s var(--ease);
+  }
+  .hero-cta:hover { gap: 18px; color: var(--accent); }
+  .hero-cta svg { width: 18px; height: 18px; }
+
+  .hero-card {
+    position: relative;
+    aspect-ratio: 4/5; border-radius: 24px;
+    overflow: hidden;
+  }
+  .hero-card img {
+    width: 100%; height: 100%; object-fit: cover;
+    filter: grayscale(100%);
+    transition: filter 1s var(--ease), transform 1.2s var(--ease);
+  }
+  .hero-card:hover img { filter: grayscale(0%); transform: scale(1.08); }
+  .hero-badge {
+    position: absolute; top: -20px; right: -20px;
+    width: 160px; height: 160px;
+    border-radius: 50%; background: var(--accent);
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    color: var(--text); text-align: center;
+    animation: bounce-slow 4s ease-in-out infinite;
+    z-index: 2;
+  }
+  .hero-badge-num {
+    font-size: 32px; font-weight: 700; font-style: italic;
+    letter-spacing: -0.02em; line-height: 1;
+  }
+  .hero-badge-text {
+    margin-top: 8px;
+    font-size: 8px; font-weight: 900;
+    letter-spacing: 0.3em; text-transform: uppercase;
+    max-width: 100px; line-height: 1.4;
+  }
+  @keyframes bounce-slow {
+    0%, 100% { transform: translateY(-5%); }
+    50% { transform: translateY(5%); }
+  }
+
+  .hero-meta {
+    margin-bottom: 32px;
+    display: flex; align-items: center; gap: 14px;
+  }
+  .hero-meta-dot {
+    width: 8px; height: 8px; border-radius: 50%; background: var(--accent);
+  }
+
+  /* Services */
+  .services {
+    background: var(--bg-2); padding: 140px 0;
+  }
+  .services-head {
+    margin-bottom: 80px;
+    display: grid; grid-template-columns: 2fr 1fr; gap: 60px; align-items: end;
+  }
+  .services-h2 {
+    font-size: clamp(48px, 8vw, 128px); font-weight: 900;
+    line-height: 0.85; letter-spacing: -0.05em;
+  }
+  .services-h2 .it { font-style: italic; font-weight: 500; color: var(--accent); }
+  .services-sub {
+    font-size: 16px; line-height: 1.6; color: rgba(38, 38, 38, 0.65);
+    max-width: 320px;
+  }
+  .services-grid {
+    display: grid; grid-template-columns: repeat(3, 1fr);
+    border-top: 1px solid var(--line);
+  }
+  .service {
+    padding: 56px 40px;
+    border-right: 1px solid var(--line);
+    border-bottom: 1px solid var(--line);
+    background: var(--bg);
+    transition: background .6s var(--ease), color .6s var(--ease);
+    cursor: pointer;
+    position: relative;
+  }
+  .service:last-child { border-right: 0; }
+  .service:hover { background: var(--accent); }
+  .service:hover .service-icon { color: var(--text); }
+  .service:hover .service-arrow { transform: translate(4px, -4px); }
+  .service-icon {
+    font-size: 40px; font-weight: 900; font-style: italic;
+    color: var(--accent); line-height: 1;
+    transition: color .6s var(--ease);
+    margin-bottom: 56px;
+  }
+  .service-num {
+    font-size: 10px; font-weight: 900;
+    letter-spacing: 0.4em; text-transform: uppercase;
+    color: var(--text); margin-bottom: 14px;
+  }
+  .service-name {
+    font-size: 24px; font-weight: 900;
+    text-transform: uppercase; letter-spacing: -0.01em;
+    line-height: 1.1; margin-bottom: 18px;
+  }
+  .service-desc {
+    font-size: 14px; line-height: 1.7;
+    color: rgba(38, 38, 38, 0.75); max-width: 320px;
+  }
+  .service-arrow {
+    position: absolute; right: 32px; bottom: 32px;
+    width: 36px; height: 36px;
+    transition: transform .5s var(--ease);
+  }
+  .service-arrow svg { width: 100%; height: 100%; }
+
+  /* Portfolio staggered */
+  .portfolio { padding: 160px 0 120px; background: var(--bg); }
+  .portfolio-head {
+    display: grid; grid-template-columns: 2fr 1fr; gap: 60px; align-items: end;
+    margin-bottom: 100px;
+  }
+  .portfolio-h2 {
+    font-size: clamp(48px, 7vw, 112px); font-weight: 900;
+    line-height: 0.85; letter-spacing: -0.05em;
+  }
+  .portfolio-h2 .it { font-style: italic; font-weight: 500; color: var(--accent); }
+  .portfolio-sub {
+    font-size: 16px; line-height: 1.6; color: rgba(38, 38, 38, 0.65);
+    max-width: 320px;
+  }
+  .portfolio-grid {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 60px 80px;
+  }
+  .portfolio-grid > :nth-child(even) { transform: translateY(100px); }
+
+  .case { display: block; cursor: pointer; }
+  .case-img-wrap {
+    position: relative; aspect-ratio: 3/4;
+    border-radius: 16px; overflow: hidden;
+    margin-bottom: 32px;
+  }
+  .case-img-wrap img {
+    width: 100%; height: 100%; object-fit: cover;
+    filter: grayscale(100%);
+    transition: filter 1s var(--ease), transform 1.5s var(--ease);
+  }
+  .case:hover .case-img-wrap img { filter: grayscale(0%); transform: scale(1.08); }
+  .case-hover {
+    position: absolute; inset: 0;
+    display: flex; align-items: center; justify-content: center;
+    opacity: 0; transition: opacity .6s var(--ease);
+    pointer-events: none;
+  }
+  .case:hover .case-hover { opacity: 1; }
+  .case-circle {
+    width: 96px; height: 96px; border-radius: 50%;
+    background: var(--text); color: var(--bg);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 10px; font-weight: 900;
+    letter-spacing: 0.2em; text-transform: uppercase;
+  }
+  .case-cat {
+    font-size: 10px; font-weight: 900;
+    letter-spacing: 0.4em; text-transform: uppercase;
+    color: var(--accent); margin-bottom: 14px;
+  }
+  .case-title {
+    font-size: 32px; font-weight: 900; line-height: 0.95;
+    letter-spacing: -0.03em; margin-bottom: 16px;
+    text-transform: uppercase;
+  }
+  .case-meta {
+    font-size: 11px; font-weight: 700;
+    letter-spacing: 0.16em; text-transform: uppercase;
+    color: rgba(38, 38, 38, 0.5);
+  }
+  .case-meta span:not(:last-child)::after {
+    content: '•'; margin: 0 10px; color: var(--accent);
+  }
+
+  /* Quote band */
+  .quote-band {
+    background: var(--bg-2); padding: 140px 0;
+    border-top: 1px solid var(--line);
+  }
+  .quote-band-inner {
+    max-width: 960px; margin: 0 auto; text-align: center;
+  }
+  .quote-band blockquote {
+    font-size: clamp(28px, 4vw, 56px);
+    font-weight: 500; font-style: italic;
+    line-height: 1.15; letter-spacing: -0.02em;
+    margin-bottom: 40px;
+  }
+  .quote-band blockquote .accent { color: var(--accent); }
+  .quote-band cite {
+    font-size: 10px; font-weight: 900;
+    letter-spacing: 0.4em; text-transform: uppercase;
+    font-style: normal; color: rgba(38, 38, 38, 0.55);
+  }
+
+  /* Footer */
+  .ftr { background: var(--bg-2); padding: 120px 0 32px; }
+  .ftr-grid {
+    display: grid; grid-template-columns: 5fr 7fr; gap: 80px;
+    margin-bottom: 100px;
+  }
+  .ftr-brand-block .ftr-brand {
+    font-size: 48px; font-weight: 900;
+    letter-spacing: -0.04em; line-height: 0.95;
+    margin-bottom: 28px;
+  }
+  .ftr-mission {
+    font-size: 15px; line-height: 1.7; max-width: 380px;
+    color: rgba(38, 38, 38, 0.7);
+  }
+  .ftr-cols { display: grid; grid-template-columns: repeat(3, 1fr); gap: 40px; }
+  .ftr-col h4 {
+    font-size: 10px; font-weight: 900;
+    letter-spacing: 0.4em; text-transform: uppercase;
+    color: var(--accent);
+    padding-bottom: 8px; margin-bottom: 24px;
+    border-bottom: 1px solid var(--accent); width: fit-content;
+  }
+  .ftr-col ul { list-style: none; display: flex; flex-direction: column; gap: 12px; }
+  .ftr-col a, .ftr-col li {
+    font-size: 14px; font-weight: 500;
+    color: var(--text); line-height: 1.4;
+    transition: color .3s var(--ease);
+  }
+  .ftr-col a:hover { color: var(--accent); }
+  .ftr-bottom {
+    border-top: 1px solid var(--line);
+    padding-top: 28px;
+    display: flex; justify-content: space-between; align-items: center;
+    gap: 24px; flex-wrap: wrap;
+    font-size: 9px; font-weight: 700;
+    letter-spacing: 0.2em; text-transform: uppercase;
+    color: rgba(38, 38, 38, 0.3);
+  }
+  .ftr-bottom-links { display: flex; gap: 28px; }
+  .ftr-bottom a:hover { color: var(--text); }
+
+  /* Reveal */
+  .reveal { opacity: 0; transform: translateY(40px); transition: all 1s var(--ease); }
+  .reveal.in { opacity: 1; transform: translateY(0); }
+
+  /* Responsive */
+  @media (max-width: 1100px) {
+    .container { padding: 0 32px; }
+    .nav-inner { padding: 0 32px; }
+    .hero-grid { grid-template-columns: 1fr; gap: 64px; }
+    .hero-h1 { font-size: 22vw; }
+    .hero-card { max-width: 480px; margin: 0 auto; }
+    .services-head, .portfolio-head { grid-template-columns: 1fr; gap: 24px; }
+    .services-grid { grid-template-columns: 1fr; }
+    .service { border-right: 0; }
+    .portfolio-grid { grid-template-columns: 1fr; gap: 60px; }
+    .portfolio-grid > :nth-child(even) { transform: none; }
+    .ftr-grid { grid-template-columns: 1fr; gap: 60px; }
+    .ftr-cols { grid-template-columns: repeat(3, 1fr); }
+  }
+  @media (max-width: 700px) {
+    .container { padding: 0 20px; }
+    .nav-inner { padding: 0 20px; }
+    .nav-links { display: none; }
+    .nav-brand { font-size: 14px; }
+    .nav-cta { padding: 10px 18px; font-size: 9px; }
+    .hero { padding: 110px 0 60px; }
+    .hero-h1 { font-size: 24vw; }
+    .hero-body { font-size: 17px; }
+    .hero-badge { width: 120px; height: 120px; top: -10px; right: -10px; }
+    .hero-badge-num { font-size: 24px; }
+    .services, .portfolio, .quote-band, .ftr { padding-top: 90px; padding-bottom: 90px; }
+    .service { padding: 40px 28px; }
+    .case-title { font-size: 24px; }
+    .ftr-cols { grid-template-columns: 1fr; gap: 32px; }
+    .ftr-bottom { flex-direction: column; align-items: start; }
+  }
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav-inner">
+    <a href="#" class="nav-brand">MAISON ROSÉE</a>
+    <ul class="nav-links">
+      <li><a href="#services">Treatments</a></li>
+      <li><a href="#cases">Studio</a></li>
+      <li><a href="#contact">Journal</a></li>
+      <li><a href="#contact">Atelier</a></li>
+    </ul>
+    <a href="#contact" class="nav-cta">Book a session</a>
+  </div>
+</nav>
+
+<section class="hero">
+  <div class="container">
+    <div class="hero-grid">
+      <div class="hero-left reveal">
+        <div class="hero-meta">
+          <span class="hero-meta-dot"></span>
+          <span class="label">Aesthetic Atelier · Est. 2018 · Brickell, Miami</span>
+        </div>
+        <h1 class="hero-h1">quietly<br /><span class="it">radiant</span><br />skin.</h1>
+        <p class="hero-body">A discreet aesthetic studio. Twelve treatments. One philosophy: less, but precise.</p>
+        <a href="#contact" class="hero-cta">
+          Book a consultation
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+        </a>
+      </div>
+      <div class="hero-right reveal">
+        <div class="hero-card">
+          <img src="https://images.unsplash.com/photo-1570172619644-dfd03ed5d881?w=900&auto=format&fit=crop&q=80" alt="Aesthetic treatment in studio" />
+          <div class="hero-badge">
+            <span class="hero-badge-num">01</span>
+            <span class="hero-badge-text">By Appointment Only</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="services" id="services">
+  <div class="container">
+    <div class="services-head reveal">
+      <h2 class="services-h2">the <span class="it">atelier</span><br />menu.</h2>
+      <p class="services-sub">Three signature protocols, all designed to refine without rewriting. We say no to twenty briefs a month so we can say yes to yours.</p>
+    </div>
+    <div class="services-grid">
+      <div class="service reveal">
+        <div class="service-icon">01</div>
+        <div class="service-num">Resurfacing</div>
+        <h3 class="service-name">Skin clarity protocol</h3>
+        <p class="service-desc">Medical-grade peels and microneedling tuned to a single objective: clarity, not transformation. A six-week regimen, observed weekly.</p>
+        <div class="service-arrow">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M7 17L17 7M7 7h10v10"/></svg>
+        </div>
+      </div>
+      <div class="service reveal">
+        <div class="service-icon">02</div>
+        <div class="service-num">Injectables</div>
+        <h3 class="service-name">Hand-drawn architecture</h3>
+        <p class="service-desc">Filler and neuromodulator work performed by hand, by appointment only. Half-millimeter increments. References available on request.</p>
+        <div class="service-arrow">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M7 17L17 7M7 7h10v10"/></svg>
+        </div>
+      </div>
+      <div class="service reveal">
+        <div class="service-icon">03</div>
+        <div class="service-num">Light Therapy</div>
+        <h3 class="service-name">LED, BBL and laser</h3>
+        <p class="service-desc">Forty-minute sessions in a quiet room, with a glass of water and a closed door. Pigment, redness, and tone, corrected gently.</p>
+        <div class="service-arrow">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M7 17L17 7M7 7h10v10"/></svg>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="portfolio" id="cases">
+  <div class="container">
+    <div class="portfolio-head reveal">
+      <h2 class="portfolio-h2">studio <span class="it">case</span><br />studies.</h2>
+      <p class="portfolio-sub">A selection of recent work. Every image is shot in-house, in natural light. No filters, no retouching.</p>
+    </div>
+    <div class="portfolio-grid">
+      <a class="case reveal" href="#">
+        <div class="case-img-wrap">
+          <img src="https://images.unsplash.com/photo-1487412947147-5cebf100ffc2?w=900&auto=format&fit=crop&q=80" alt="Lower face refinement" />
+          <div class="case-hover"><div class="case-circle">View Case</div></div>
+        </div>
+        <div class="case-cat">Injectables</div>
+        <h3 class="case-title">Lower face refinement</h3>
+        <p class="case-meta"><span>Filler, 0.6ml</span><span>Two sessions</span><span>2024</span></p>
+      </a>
+      <a class="case reveal" href="#">
+        <div class="case-img-wrap">
+          <img src="https://images.unsplash.com/photo-1559599101-f09722fb4948?w=900&auto=format&fit=crop&q=80" alt="Eight-week skin protocol" />
+          <div class="case-hover"><div class="case-circle">View Case</div></div>
+        </div>
+        <div class="case-cat">Resurfacing</div>
+        <h3 class="case-title">Eight-week clarity</h3>
+        <p class="case-meta"><span>Microneedling</span><span>Weekly</span><span>2024</span></p>
+      </a>
+      <a class="case reveal" href="#">
+        <div class="case-img-wrap">
+          <img src="https://images.unsplash.com/photo-1625093742435-6fa192b6fb10?w=900&auto=format&fit=crop&q=80" alt="Lip atelier" />
+          <div class="case-hover"><div class="case-circle">View Case</div></div>
+        </div>
+        <div class="case-cat">Lip Atelier</div>
+        <h3 class="case-title">Hand-drawn lip line</h3>
+        <p class="case-meta"><span>Filler, 0.4ml</span><span>One session</span><span>2025</span></p>
+      </a>
+      <a class="case reveal" href="#">
+        <div class="case-img-wrap">
+          <img src="https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?w=900&auto=format&fit=crop&q=80" alt="Post-summer LED protocol" />
+          <div class="case-hover"><div class="case-circle">View Case</div></div>
+        </div>
+        <div class="case-cat">Light Therapy</div>
+        <h3 class="case-title">Post-summer recovery</h3>
+        <p class="case-meta"><span>LED + BBL</span><span>Four sessions</span><span>2025</span></p>
+      </a>
+      <a class="case reveal" href="#">
+        <div class="case-img-wrap">
+          <img src="https://images.unsplash.com/photo-1556228720-195a672e8a03?w=900&auto=format&fit=crop&q=80" alt="Pigment correction" />
+          <div class="case-hover"><div class="case-circle">View Case</div></div>
+        </div>
+        <div class="case-cat">Targeted IPL</div>
+        <h3 class="case-title">Pigment correction</h3>
+        <p class="case-meta"><span>IPL</span><span>Three sessions</span><span>2024</span></p>
+      </a>
+      <a class="case reveal" href="#">
+        <div class="case-img-wrap">
+          <img src="https://images.unsplash.com/photo-1512290923902-8a9f81dc236c?w=900&auto=format&fit=crop&q=80" alt="Forehead softening" />
+          <div class="case-hover"><div class="case-circle">View Case</div></div>
+        </div>
+        <div class="case-cat">Neuromodulator</div>
+        <h3 class="case-title">Forehead softening</h3>
+        <p class="case-meta"><span>Botulinum</span><span>Quarterly</span><span>Ongoing</span></p>
+      </a>
+    </div>
+  </div>
+</section>
+
+<section class="quote-band">
+  <div class="container">
+    <div class="quote-band-inner reveal">
+      <blockquote>"I left with a face that still looked like mine, just <span class="accent">quieter</span>. That is the highest praise I can give an atelier."</blockquote>
+      <cite>Estela P. · Patient since 2021</cite>
+    </div>
+  </div>
+</section>
+
+<footer class="ftr" id="contact">
+  <div class="container">
+    <div class="ftr-grid">
+      <div class="ftr-brand-block">
+        <div class="ftr-brand">Maison<br />Rosée.</div>
+        <p class="ftr-mission">An aesthetic atelier in Brickell, Miami. We perform a small number of treatments, slowly, by appointment. Memberships available by referral only.</p>
+      </div>
+      <div class="ftr-cols">
+        <div class="ftr-col">
+          <h4>Navigate</h4>
+          <ul>
+            <li><a href="#services">Treatments</a></li>
+            <li><a href="#cases">Studio</a></li>
+            <li><a href="#">Journal</a></li>
+            <li><a href="#">Membership</a></li>
+          </ul>
+        </div>
+        <div class="ftr-col">
+          <h4>Connect</h4>
+          <ul>
+            <li><a href="#">Instagram</a></li>
+            <li><a href="#">Pinterest</a></li>
+            <li><a href="#">Press</a></li>
+            <li><a href="mailto:atelier@maisonrosee.co">Email</a></li>
+          </ul>
+        </div>
+        <div class="ftr-col">
+          <h4>Atelier</h4>
+          <ul>
+            <li>Brickell, Miami</li>
+            <li>Coral Gables (soon)</li>
+            <li>By appointment</li>
+            <li>+1 305 000 0000</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="ftr-bottom">
+      <span>© 2025 Maison Rosée Atelier · Licensed FL</span>
+      <div class="ftr-bottom-links">
+        <a href="#">Privacy</a>
+        <a href="#">Terms</a>
+        <a href="#">Accessibility</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script>
+  const io = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.classList.add('in');
+        io.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.15 });
+  document.querySelectorAll('.reveal').forEach((el, i) => {
+    el.style.transitionDelay = `${(i % 4) * 0.08}s`;
+    io.observe(el);
+  });
+</script>
+</body>
+</html>

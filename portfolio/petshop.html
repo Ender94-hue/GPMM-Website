@@ -1,0 +1,676 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>FERN & PAW · Wild Goods for Modern Pets</title>
+<meta name="description" content="Small-batch food, balms, and stoneware for thoughtful pet households. Made in small numbers, sold direct." />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --forest: #01472e;
+    --sage: #ccd5ae;
+    --olive: #e9edc9;
+    --cream: #fefae0;
+    --moss: #a3b18a;
+    --ease: cubic-bezier(0.16, 1, 0.3, 1);
+    --shadow: 0 30px 70px -20px rgba(1, 71, 46, 0.2);
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: 'Inter', system-ui, sans-serif;
+    background: var(--cream);
+    color: var(--forest);
+    line-height: 1.55;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+  }
+  img { display: block; max-width: 100%; }
+  a { color: inherit; text-decoration: none; }
+  ::selection { background: var(--forest); color: var(--cream); }
+  .display { font-family: 'Anton', sans-serif; font-weight: 400; letter-spacing: -0.05em; }
+
+  /* Noise overlay */
+  body::after {
+    content: ''; position: fixed; inset: 0; pointer-events: none; z-index: 200;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='400' height='400'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+    opacity: 0.04;
+    mix-blend-mode: multiply;
+  }
+
+  /* Labels */
+  .lbl {
+    font-size: 10px; font-weight: 700;
+    letter-spacing: 0.3em; text-transform: uppercase;
+  }
+  .lbl-wide {
+    font-size: 11px; font-weight: 700;
+    letter-spacing: 0.4em; text-transform: uppercase;
+  }
+
+  /* Fixed Nav */
+  .nav {
+    position: fixed; top: 24px; left: 0; right: 0; z-index: 100;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0 40px;
+    gap: 24px;
+  }
+  .nav-brand {
+    font-family: 'Anton', sans-serif; font-weight: 400;
+    font-size: 20px; letter-spacing: 0.04em; text-transform: uppercase;
+    color: var(--forest);
+  }
+  .nav-pill {
+    background: rgba(255, 255, 255, 0.5);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    border-radius: 999px;
+    padding: 14px 28px;
+    display: flex; gap: 32px; list-style: none;
+  }
+  .nav-pill a {
+    font-size: 10px; font-weight: 700;
+    letter-spacing: 0.2em; text-transform: uppercase;
+    color: var(--forest);
+    transition: opacity .5s var(--ease);
+  }
+  .nav-pill a:hover { opacity: 0.5; }
+  .nav-cart {
+    display: inline-flex; align-items: center; gap: 10px;
+    background: rgba(255,255,255,0.5);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(255,255,255,0.5);
+    border-radius: 999px; padding: 12px 14px 12px 18px;
+    font-size: 10px; font-weight: 700;
+    letter-spacing: 0.2em; text-transform: uppercase;
+    color: var(--forest);
+  }
+  .cart-count {
+    background: #fff; color: var(--forest);
+    width: 22px; height: 22px; border-radius: 50%;
+    display: inline-flex; align-items: center; justify-content: center;
+    font-size: 10px; font-weight: 700;
+  }
+
+  /* Hero */
+  .hero {
+    position: relative; min-height: 100vh;
+    background: var(--sage);
+    padding: 140px 40px 80px;
+    overflow: hidden;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+  }
+  .hero-eyebrow {
+    margin-bottom: 32px; opacity: 0;
+    animation: fadeIn 1s var(--ease) 0.2s forwards;
+  }
+  .hero-title {
+    font-family: 'Anton', sans-serif; font-weight: 400;
+    font-size: 23vw; line-height: 0.75; letter-spacing: -0.05em;
+    text-align: center; color: var(--forest);
+    position: relative; z-index: 2;
+  }
+  .hero-title .letter {
+    display: inline-block;
+    opacity: 0; transform: translateY(120px);
+    transition: opacity 1.2s var(--ease), transform 1.2s var(--ease);
+  }
+  .hero-title.in .letter { opacity: 1; transform: translateY(0); }
+
+  .hero-img {
+    position: absolute; overflow: hidden;
+    border-radius: 3rem;
+    box-shadow: var(--shadow);
+    z-index: 3;
+  }
+  .hero-img img {
+    width: 100%; height: 100%; object-fit: cover;
+  }
+  .float-1 {
+    top: 18%; left: 6%;
+    width: 200px; height: 260px;
+    animation: float 7s ease-in-out infinite;
+  }
+  .float-2 {
+    top: 14%; right: 7%;
+    width: 220px; height: 280px;
+    animation: float 9s ease-in-out infinite reverse;
+    animation-delay: 0.8s;
+  }
+  .float-3 {
+    bottom: 14%; right: 14%;
+    width: 180px; height: 220px;
+    animation: float 8s ease-in-out infinite;
+    animation-delay: 1.6s;
+  }
+  @keyframes float {
+    0%, 100% { transform: translateY(0) rotate(0deg); }
+    50% { transform: translateY(-20px) rotate(5deg); }
+  }
+  @keyframes fadeIn {
+    to { opacity: 1; }
+  }
+
+  .hero-bottom {
+    width: 100%; max-width: 1280px;
+    margin-top: 80px; position: relative; z-index: 2;
+    display: grid; grid-template-columns: 1fr 1fr; gap: 80px;
+    align-items: end;
+  }
+  .hero-tag {
+    font-size: 18px; line-height: 1.5; max-width: 360px;
+    color: var(--forest); font-weight: 500;
+  }
+  .hero-meta {
+    text-align: right;
+    display: flex; flex-direction: column; gap: 6px;
+    color: var(--forest);
+  }
+  .hero-meta-line { opacity: 0.65; }
+
+  /* Section heads */
+  .sec {
+    border-top-left-radius: 5rem;
+    border-top-right-radius: 5rem;
+    margin-top: -5rem; position: relative;
+    overflow: hidden;
+  }
+  .sec-inner {
+    max-width: 1400px; margin: 0 auto;
+    padding: 120px 40px;
+  }
+  .sec-head {
+    display: grid; grid-template-columns: 1fr auto; gap: 40px;
+    align-items: end; margin-bottom: 80px;
+  }
+  .sec-h2 {
+    font-family: 'Anton', sans-serif; font-weight: 400;
+    font-size: 15vw; line-height: 0.78; letter-spacing: -0.05em;
+    text-transform: uppercase;
+    color: var(--forest);
+  }
+  .sec-cta {
+    width: 200px; height: 200px; border-radius: 50%;
+    background: var(--forest); color: var(--olive);
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    flex-shrink: 0;
+    transition: transform .8s var(--ease), background .5s var(--ease);
+    font-family: 'Anton', sans-serif;
+  }
+  .sec-cta:hover { transform: scale(1.06) rotate(-4deg); background: var(--moss); }
+  .sec-cta .small {
+    font-size: 9px; font-weight: 700; letter-spacing: 0.3em;
+    text-transform: uppercase; font-family: 'Inter', sans-serif;
+    margin-bottom: 4px;
+  }
+  .sec-cta .big {
+    font-size: 26px; letter-spacing: -0.02em;
+    line-height: 1;
+  }
+  .sec-cta svg { width: 18px; height: 18px; margin-top: 8px; }
+
+  /* Product grid */
+  .grid-block { background: var(--olive); }
+  .pgrid {
+    display: grid; grid-template-columns: repeat(3, 1fr);
+    gap: 28px;
+  }
+  .product {
+    display: block;
+  }
+  .product-img-wrap {
+    position: relative; aspect-ratio: 4/5;
+    border-radius: 2.5rem; overflow: hidden;
+    background: var(--moss);
+    margin-bottom: 24px;
+  }
+  .product-img-wrap img {
+    width: 100%; height: 100%; object-fit: cover;
+    transition: transform 1.5s var(--ease);
+  }
+  .product:hover .product-img-wrap img { transform: scale(1.1); }
+  .product-overlay {
+    position: absolute; inset: 0;
+    background: rgba(1, 71, 46, 0.3);
+    backdrop-filter: blur(2px);
+    -webkit-backdrop-filter: blur(2px);
+    display: flex; align-items: flex-end; justify-content: center;
+    padding-bottom: 32px;
+    opacity: 0;
+    transition: opacity 1s var(--ease);
+  }
+  .product:hover .product-overlay { opacity: 1; }
+  .product-add {
+    background: #fff; color: var(--forest);
+    padding: 16px 32px; border-radius: 999px;
+    font-size: 11px; font-weight: 700;
+    letter-spacing: 0.3em; text-transform: uppercase;
+    transform: translateY(32px);
+    transition: transform 1s var(--ease);
+  }
+  .product:hover .product-add { transform: translateY(0); }
+
+  .product-tag {
+    font-size: 10px; font-weight: 700;
+    letter-spacing: 0.4em; text-transform: uppercase;
+    color: var(--moss); margin-bottom: 8px;
+  }
+  .product-name {
+    font-family: 'Anton', sans-serif; font-weight: 400;
+    font-size: 32px; line-height: 0.95; letter-spacing: -0.02em;
+    text-transform: uppercase; color: var(--forest);
+    margin-bottom: 14px;
+  }
+  .product-meta {
+    display: flex; justify-content: space-between;
+    font-size: 12px; font-weight: 500;
+    color: var(--forest); opacity: 0.7;
+  }
+  .product-price {
+    font-weight: 700; letter-spacing: 0.04em;
+  }
+
+  /* Story band */
+  .story {
+    background: var(--cream); position: relative;
+  }
+  .story-inner {
+    max-width: 1400px; margin: 0 auto;
+    padding: 140px 40px;
+    display: grid; grid-template-columns: 1.1fr 1fr; gap: 100px;
+    align-items: center;
+  }
+  .story-img {
+    aspect-ratio: 4/5; border-radius: 2.5rem;
+    overflow: hidden; box-shadow: var(--shadow);
+  }
+  .story-img img {
+    width: 100%; height: 100%; object-fit: cover;
+    transition: transform 2s var(--ease);
+  }
+  .story-img:hover img { transform: scale(1.05); }
+  .story-eyebrow { color: var(--moss); margin-bottom: 24px; }
+  .story-h3 {
+    font-family: 'Anton', sans-serif; font-weight: 400;
+    font-size: clamp(48px, 8vw, 128px); line-height: 0.82;
+    letter-spacing: -0.05em; text-transform: uppercase;
+    color: var(--forest); margin-bottom: 36px;
+  }
+  .story-h3 .it { font-style: italic; color: var(--moss); }
+  .story-text {
+    font-size: 18px; line-height: 1.6;
+    color: var(--forest); max-width: 480px;
+    opacity: 0.8;
+  }
+  .story-text p + p { margin-top: 18px; }
+  .story-link {
+    display: inline-flex; align-items: center; gap: 12px;
+    margin-top: 36px;
+    border-bottom: 2px solid var(--forest); padding-bottom: 6px;
+    font-size: 11px; font-weight: 700;
+    letter-spacing: 0.3em; text-transform: uppercase;
+    color: var(--forest);
+    transition: gap .6s var(--ease);
+  }
+  .story-link:hover { gap: 20px; }
+  .story-link svg { width: 16px; height: 16px; }
+
+  /* Footer */
+  .ftr {
+    background: var(--forest); color: var(--sage);
+    border-top-left-radius: 5rem;
+    border-top-right-radius: 5rem;
+    padding: 120px 40px 40px;
+    position: relative;
+  }
+  .ftr-inner { max-width: 1400px; margin: 0 auto; }
+  .ftr-grid {
+    display: grid; grid-template-columns: repeat(12, 1fr);
+    gap: 60px; margin-bottom: 100px;
+  }
+  .ftr-left { grid-column: span 6; }
+  .ftr-right { grid-column: span 6; display: grid; grid-template-columns: 1fr 1fr; gap: 60px; }
+
+  .ftr-h2 {
+    font-family: 'Anton', sans-serif; font-weight: 400;
+    font-size: clamp(40px, 5.5vw, 84px); line-height: 0.9;
+    letter-spacing: -0.04em; text-transform: uppercase;
+    margin-bottom: 32px;
+    color: var(--olive);
+  }
+  .ftr-form {
+    display: flex; gap: 16px; align-items: end;
+    max-width: 520px;
+    border-bottom: 1px solid var(--sage);
+    padding-bottom: 12px;
+  }
+  .ftr-form input {
+    flex: 1; background: transparent; border: 0;
+    color: var(--sage); font-family: 'Inter', sans-serif;
+    font-size: 14px; font-weight: 700;
+    letter-spacing: 0.2em; text-transform: uppercase;
+    padding: 8px 0;
+  }
+  .ftr-form input::placeholder { color: rgba(204, 213, 174, 0.5); }
+  .ftr-form input:focus { outline: none; }
+  .ftr-form button {
+    background: transparent; border: 0;
+    color: var(--sage); cursor: pointer;
+    font-size: 11px; font-weight: 700;
+    letter-spacing: 0.3em; text-transform: uppercase;
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 8px 0;
+  }
+  .ftr-form button svg { width: 14px; height: 14px; }
+  .ftr-mission {
+    margin-top: 36px;
+    font-size: 14px; line-height: 1.7;
+    color: var(--moss); max-width: 440px;
+  }
+
+  .ftr-col h4 {
+    font-size: 11px; font-weight: 700;
+    letter-spacing: 0.4em; text-transform: uppercase;
+    color: var(--olive); margin-bottom: 24px;
+  }
+  .ftr-col ul { list-style: none; display: flex; flex-direction: column; gap: 14px; }
+  .ftr-col a, .ftr-col li {
+    font-size: 11px; font-weight: 700;
+    letter-spacing: 0.2em; text-transform: uppercase;
+    color: var(--sage);
+    transition: color .4s var(--ease);
+  }
+  .ftr-col a:hover { color: var(--olive); }
+
+  .ftr-bottom {
+    border-top: 1px solid rgba(204, 213, 174, 0.15);
+    padding-top: 28px;
+    display: flex; justify-content: space-between; align-items: center;
+    gap: 24px; flex-wrap: wrap;
+    color: rgba(204, 213, 174, 0.3);
+    font-size: 10px; font-weight: 700;
+    letter-spacing: 0.2em; text-transform: uppercase;
+  }
+  .ftr-bottom-links { display: flex; gap: 28px; }
+  .ftr-bottom a:hover { color: var(--sage); }
+
+  /* Reveal animation */
+  .reveal { opacity: 0; transform: translateY(100px); transition: opacity 1.2s var(--ease), transform 1.2s var(--ease); }
+  .reveal.in { opacity: 1; transform: translateY(0); }
+
+  /* Responsive */
+  @media (max-width: 1100px) {
+    .nav { padding: 0 24px; }
+    .nav-pill { gap: 20px; padding: 12px 22px; }
+    .hero { padding: 120px 24px 60px; }
+    .hero-bottom { grid-template-columns: 1fr; gap: 32px; }
+    .hero-meta { text-align: left; }
+    .float-1, .float-2, .float-3 { width: 140px; height: 180px; }
+    .sec-inner { padding: 100px 24px; }
+    .sec-head { grid-template-columns: 1fr; gap: 32px; }
+    .sec-cta { width: 160px; height: 160px; }
+    .pgrid { grid-template-columns: repeat(2, 1fr); gap: 20px; }
+    .story-inner { grid-template-columns: 1fr; gap: 48px; padding: 100px 24px; }
+    .ftr { padding: 100px 24px 32px; }
+    .ftr-grid { grid-template-columns: 1fr; gap: 60px; }
+    .ftr-left, .ftr-right { grid-column: span 12; }
+    .ftr-right { grid-template-columns: 1fr 1fr; gap: 32px; }
+  }
+  @media (max-width: 700px) {
+    .nav-pill { display: none; }
+    .hero-title { font-size: 30vw; }
+    .float-1 { width: 110px; height: 140px; left: 4%; top: 22%; }
+    .float-2 { width: 120px; height: 150px; right: 4%; top: 18%; }
+    .float-3 { display: none; }
+    .pgrid { grid-template-columns: 1fr; }
+    .ftr-right { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <a href="#" class="nav-brand">- FERN & PAW</a>
+  <ul class="nav-pill">
+    <li><a href="#shop">Shop</a></li>
+    <li><a href="#story">Journal</a></li>
+    <li><a href="#shop">Apothecary</a></li>
+    <li><a href="#shop">Stockists</a></li>
+  </ul>
+  <a href="#shop" class="nav-cart">
+    Cart
+    <span class="cart-count">2</span>
+  </a>
+</nav>
+
+<section class="hero">
+  <div class="hero-eyebrow">
+    <span class="lbl-wide">Small Batch · Direct to Door · Est. 2021</span>
+  </div>
+  <h1 class="hero-title display" id="heroTitle">FETCH.</h1>
+
+  <div class="hero-img float-1">
+    <img src="https://images.unsplash.com/photo-1504430225224-21a649ac91bc?w=600&auto=format&fit=crop&q=80" alt="Golden retriever portrait" />
+  </div>
+  <div class="hero-img float-2">
+    <img src="https://images.unsplash.com/photo-1647806422508-0322f33e270b?w=600&auto=format&fit=crop&q=80" alt="Cat against a soft yellow background" />
+  </div>
+  <div class="hero-img float-3">
+    <img src="https://images.unsplash.com/photo-1558201496-a35f22e7fb5c?w=600&auto=format&fit=crop&q=80" alt="Tabby kitten close-up" />
+  </div>
+
+  <div class="hero-bottom reveal">
+    <p class="hero-tag">A direct-to-door pet apothecary. Small-batch food, balms, and stoneware for households that read labels.</p>
+    <div class="hero-meta">
+      <span class="lbl hero-meta-line">Origin · Hudson Valley, NY</span>
+      <span class="lbl hero-meta-line">Stockists · 14 cities</span>
+      <span class="lbl hero-meta-line">Issue No. 04 · Spring 2026</span>
+    </div>
+  </div>
+</section>
+
+<section class="sec grid-block" id="shop">
+  <div class="sec-inner">
+    <div class="sec-head reveal">
+      <h2 class="sec-h2 display">Wild<br />Goods.</h2>
+      <a href="#shop" class="sec-cta">
+        <span class="small">Shop all</span>
+        <span class="big">38 items</span>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+      </a>
+    </div>
+    <div class="pgrid">
+      <a class="product reveal" href="#">
+        <div class="product-img-wrap">
+          <img src="https://images.unsplash.com/photo-1714068691210-073dc52c6c1d?w=700&auto=format&fit=crop&q=80" alt="Wild salmon dog food" />
+          <div class="product-overlay"><span class="product-add">Quick Add</span></div>
+        </div>
+        <div class="product-tag">Daily Food · Dogs</div>
+        <h3 class="product-name display">Wild Salmon Crunch</h3>
+        <div class="product-meta">
+          <span>Grain-free · 2lb bag</span>
+          <span class="product-price">$28</span>
+        </div>
+      </a>
+      <a class="product reveal" href="#">
+        <div class="product-img-wrap">
+          <img src="https://images.unsplash.com/photo-1568640347023-a616a30bc3bd?w=700&auto=format&fit=crop&q=80" alt="Bone treat assortment" />
+          <div class="product-overlay"><span class="product-add">Quick Add</span></div>
+        </div>
+        <div class="product-tag">Treats · All Sizes</div>
+        <h3 class="product-name display">Forest Floor Biscuits</h3>
+        <div class="product-meta">
+          <span>Oat & honey · 12 pcs</span>
+          <span class="product-price">$14</span>
+        </div>
+      </a>
+      <a class="product reveal" href="#">
+        <div class="product-img-wrap">
+          <img src="https://images.unsplash.com/photo-1558788353-f76d92427f16?w=700&auto=format&fit=crop&q=80" alt="Golden retriever portrait" />
+          <div class="product-overlay"><span class="product-add">Quick Add</span></div>
+        </div>
+        <div class="product-tag">Supplement · Dogs</div>
+        <h3 class="product-name display">Moss Mineral Chew</h3>
+        <div class="product-meta">
+          <span>Joint & coat · 30ct</span>
+          <span class="product-price">$32</span>
+        </div>
+      </a>
+      <a class="product reveal" href="#">
+        <div class="product-img-wrap">
+          <img src="https://images.unsplash.com/photo-1629740067905-bd3f515aa739?w=700&auto=format&fit=crop&q=80" alt="Small dog on green textile" />
+          <div class="product-overlay"><span class="product-add">Quick Add</span></div>
+        </div>
+        <div class="product-tag">Skincare · All Pets</div>
+        <h3 class="product-name display">Sage Soothing Balm</h3>
+        <div class="product-meta">
+          <span>Paw & nose · 2oz tin</span>
+          <span class="product-price">$22</span>
+        </div>
+      </a>
+      <a class="product reveal" href="#">
+        <div class="product-img-wrap">
+          <img src="https://images.unsplash.com/photo-1597838816882-4435b1977fbe?w=700&auto=format&fit=crop&q=80" alt="Brown tabby cat on white" />
+          <div class="product-overlay"><span class="product-add">Quick Add</span></div>
+        </div>
+        <div class="product-tag">Daily Food · Cats</div>
+        <h3 class="product-name display">Cream Cat Pâté</h3>
+        <div class="product-meta">
+          <span>Chicken · 4 pots</span>
+          <span class="product-price">$18</span>
+        </div>
+      </a>
+      <a class="product reveal" href="#">
+        <div class="product-img-wrap">
+          <img src="https://images.unsplash.com/photo-1679224106783-c21b1841412a?w=700&auto=format&fit=crop&q=80" alt="Black ceramic dog bowl with paw prints" />
+          <div class="product-overlay"><span class="product-add">Quick Add</span></div>
+        </div>
+        <div class="product-tag">Home · Stoneware</div>
+        <h3 class="product-name display">Wild Stoneware Bowl</h3>
+        <div class="product-meta">
+          <span>Hand-thrown · 6"</span>
+          <span class="product-price">$48</span>
+        </div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<section class="sec story" id="story">
+  <div class="story-inner">
+    <div class="story-img reveal">
+      <img src="https://images.unsplash.com/photo-1600804340584-c7db2eacf0bf?w=900&auto=format&fit=crop&q=80" alt="Golden retriever puppy in tall grass" />
+    </div>
+    <div class="story-copy reveal">
+      <div class="lbl-wide story-eyebrow">— The Journal · Issue 04</div>
+      <h3 class="story-h3">Made in <span class="it">small</span> numbers.</h3>
+      <div class="story-text">
+        <p>Every batch is cooked, jarred, and labeled in our Hudson Valley kitchen. We do not pretend to be a factory. We make seventy bags a week, and we ship them by Friday.</p>
+        <p>The work is slow on purpose. The result is food you would feed yourself, on a bad day, and a good one.</p>
+      </div>
+      <a href="#" class="story-link">
+        Read the journal
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+      </a>
+    </div>
+  </div>
+</section>
+
+<footer class="ftr" id="contact">
+  <div class="ftr-inner">
+    <div class="ftr-grid">
+      <div class="ftr-left">
+        <h2 class="ftr-h2 display">Join<br />the pack.</h2>
+        <form class="ftr-form" onsubmit="event.preventDefault()">
+          <input type="email" placeholder="Your email address" />
+          <button type="submit">
+            Subscribe
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+          </button>
+        </form>
+        <p class="ftr-mission">One letter a month. New drops, restock notes, and the occasional recipe from the kitchen. Unsubscribe in one click.</p>
+      </div>
+      <div class="ftr-right">
+        <div class="ftr-col">
+          <h4>Navigate</h4>
+          <ul>
+            <li><a href="#shop">Shop all</a></li>
+            <li><a href="#shop">Apothecary</a></li>
+            <li><a href="#shop">Stoneware</a></li>
+            <li><a href="#story">Journal</a></li>
+            <li><a href="#shop">Stockists</a></li>
+          </ul>
+        </div>
+        <div class="ftr-col">
+          <h4>Connect</h4>
+          <ul>
+            <li><a href="#">Instagram</a></li>
+            <li><a href="#">Substack</a></li>
+            <li><a href="#">Wholesale</a></li>
+            <li><a href="mailto:hello@fernandpaw.co">Email</a></li>
+            <li><a href="#">+1 845 000 0000</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="ftr-bottom">
+      <span>© 2026 Fern & Paw Apothecary · Hudson Valley, NY</span>
+      <div class="ftr-bottom-links">
+        <a href="#">Privacy</a>
+        <a href="#">Terms</a>
+        <a href="#">Shipping</a>
+        <a href="#">Returns</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script>
+  // Staggered hero letter reveal
+  const heroTitle = document.getElementById('heroTitle');
+  if (heroTitle) {
+    const text = heroTitle.textContent;
+    heroTitle.innerHTML = '';
+    [...text].forEach((ch, i) => {
+      const s = document.createElement('span');
+      s.className = 'letter';
+      s.style.transitionDelay = (i * 0.05) + 's';
+      s.textContent = ch === ' ' ? ' ' : ch;
+      heroTitle.appendChild(s);
+    });
+    requestAnimationFrame(() => heroTitle.classList.add('in'));
+  }
+
+  // Reveal on scroll
+  const io = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.classList.add('in');
+        io.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.15 });
+  document.querySelectorAll('.reveal').forEach((el, i) => {
+    el.style.transitionDelay = ((i % 4) * 0.08) + 's';
+    io.observe(el);
+  });
+
+  // Subtle scroll parallax on floating hero images
+  const floats = document.querySelectorAll('.float-1, .float-2, .float-3');
+  window.addEventListener('scroll', () => {
+    const y = window.scrollY * 0.05;
+    floats.forEach((el, i) => {
+      const dir = i % 2 === 0 ? 1 : -1;
+      el.style.translate = `0 ${y * dir}px`;
+    });
+  }, { passive: true });
+</script>
+</body>
+</html>

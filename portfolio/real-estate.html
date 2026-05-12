@@ -1,0 +1,593 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>MERIDIAN · Rare Addresses · Real Estate</title>
+<meta name="description" content="A private brokerage representing residences across the most considered addresses in North America." />
+<link rel="preconnect" href="https://api.fontshare.com" crossorigin>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://api.fontshare.com/v2/css?f[]=clash-display@500,700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #050505;
+    --bg-deep: #0a0a0a;
+    --fg: #FFFFFF;
+    --muted: rgba(255,255,255,0.4);
+    --line: rgba(255,255,255,0.06);
+    --line-strong: rgba(255,255,255,0.2);
+    --ease: cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: 'Inter', system-ui, sans-serif;
+    background: var(--bg);
+    color: var(--fg);
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+    font-weight: 400;
+  }
+  .display { font-family: 'Clash Display', sans-serif; letter-spacing: -0.05em; }
+  img { display: block; max-width: 100%; }
+  a { color: inherit; text-decoration: none; }
+  ::selection { background: #fff; color: #000; }
+
+  /* Atmospheric light leaks */
+  .leak {
+    position: absolute; border-radius: 9999px;
+    filter: blur(120px); mix-blend-mode: screen;
+    pointer-events: none;
+  }
+  .leak-orange { background: rgba(249, 115, 22, 0.18); }
+  .leak-blue { background: rgba(30, 58, 138, 0.22); }
+
+  /* Mix-blend Navigation */
+  .nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 50;
+    mix-blend-mode: difference;
+    padding: 32px 48px;
+    display: flex; align-items: center; justify-content: space-between;
+    gap: 24px;
+  }
+  .nav-brand {
+    font-family: 'Clash Display', sans-serif; font-weight: 700;
+    letter-spacing: -0.04em; font-size: 22px; color: #fff;
+  }
+  .nav-links {
+    display: flex; gap: 40px; list-style: none;
+  }
+  .nav-links a {
+    font-size: 11px; font-weight: 700; letter-spacing: 0.2em;
+    text-transform: uppercase; color: #fff;
+    transition: opacity .3s var(--ease);
+  }
+  .nav-links a:hover { opacity: 0.5; }
+  .nav-cta {
+    border: 1px solid rgba(255,255,255,0.2); padding: 12px 22px;
+    border-radius: 999px; font-size: 11px; letter-spacing: 0.2em;
+    text-transform: uppercase; font-weight: 700; color: #fff;
+    transition: background .4s var(--ease), color .4s var(--ease);
+  }
+  .nav-cta:hover { background: #fff; color: #000; }
+
+  /* Hero */
+  .hero {
+    position: relative; min-height: 100vh;
+    display: flex; align-items: center; justify-content: center;
+    padding: 160px 48px 100px;
+    overflow: hidden;
+  }
+  .hero .leak-orange { top: -10%; left: -10%; width: 700px; height: 700px; }
+  .hero .leak-blue { bottom: -15%; right: -10%; width: 700px; height: 700px; }
+  .hero-meta-l {
+    position: absolute; left: 48px; top: 50%;
+    transform: translateY(-50%) rotate(-90deg); transform-origin: left center;
+    font-size: 10px; font-weight: 700; letter-spacing: 0.3em; text-transform: uppercase;
+    color: var(--muted); white-space: nowrap;
+  }
+  .hero-meta-r {
+    position: absolute; right: 48px; top: 50%;
+    transform: translateY(-50%) rotate(90deg); transform-origin: right center;
+    font-size: 10px; font-weight: 700; letter-spacing: 0.3em; text-transform: uppercase;
+    color: var(--muted); white-space: nowrap;
+  }
+  .hero-inner {
+    position: relative; width: 100%; max-width: 1400px;
+    display: flex; justify-content: center;
+  }
+  .hero-img {
+    position: relative; aspect-ratio: 4/5; width: 100%; max-width: 480px;
+    overflow: hidden; border-radius: 2px; z-index: 2;
+  }
+  .hero-img img {
+    width: 100%; height: 100%; object-fit: cover;
+    transition: transform 6s ease-out;
+    filter: grayscale(0.15) contrast(1.05);
+  }
+  .hero-img:hover img { transform: scale(1.06); }
+  .hero-title {
+    position: absolute; left: 4vw; bottom: -2vw; z-index: 3;
+    font-family: 'Clash Display', sans-serif; font-weight: 700;
+    font-size: 15vw; line-height: 0.82; letter-spacing: -0.05em;
+    color: #fff; pointer-events: none; white-space: nowrap;
+  }
+  .hero-side {
+    position: absolute; right: 80px; bottom: 110px;
+    max-width: 256px; font-size: 14px; line-height: 1.6;
+    font-weight: 300; color: rgba(255,255,255,0.55);
+    z-index: 4;
+  }
+  .hero-side strong {
+    display: block; font-size: 10px; font-weight: 700;
+    letter-spacing: 0.2em; text-transform: uppercase;
+    color: var(--muted); margin-bottom: 12px;
+  }
+
+  /* Stats */
+  .stats {
+    border-top: 1px solid var(--line);
+    border-bottom: 1px solid var(--line);
+    display: grid; grid-template-columns: repeat(4, 1fr);
+  }
+  .stat {
+    padding: 64px 40px; border-right: 1px solid var(--line);
+    opacity: 0; transform: translateY(40px);
+    transition: opacity 1s var(--ease), transform 1s var(--ease);
+  }
+  .stat.in { opacity: 1; transform: translateY(0); }
+  .stat:last-child { border-right: 0; }
+  .stat-label {
+    font-size: 10px; font-weight: 700; letter-spacing: 0.2em;
+    text-transform: uppercase; color: var(--muted); margin-bottom: 18px;
+  }
+  .stat-value {
+    font-family: 'Clash Display', sans-serif; font-weight: 500;
+    font-size: 28px; letter-spacing: -0.04em; line-height: 1;
+  }
+
+  /* Editorial blocks */
+  .editorial {
+    position: relative; padding: 160px 48px;
+    display: grid; grid-template-columns: 3fr 9fr;
+    gap: 100px; align-items: start;
+    border-bottom: 1px solid var(--line);
+  }
+  .editorial .leak {
+    width: 500px; height: 500px;
+  }
+  .ed-num {
+    font-family: 'Clash Display', sans-serif; font-weight: 700;
+    font-size: clamp(72px, 9vw, 140px); letter-spacing: -0.05em;
+    line-height: 0.95; position: sticky; top: 140px;
+    background: linear-gradient(180deg, #fff 0%, rgba(255,255,255,0.4) 100%);
+    -webkit-background-clip: text; background-clip: text; color: transparent;
+  }
+  .ed-body { max-width: 65ch; }
+  .ed-label {
+    font-size: 10px; font-weight: 700; letter-spacing: 0.2em;
+    text-transform: uppercase; color: var(--muted); margin-bottom: 28px;
+  }
+  .ed-heading {
+    font-family: 'Clash Display', sans-serif; font-weight: 700;
+    font-size: clamp(34px, 4.4vw, 64px); letter-spacing: -0.04em;
+    line-height: 1.02; margin-bottom: 40px;
+  }
+  .ed-text {
+    font-size: 21px; line-height: 1.65; font-weight: 300;
+    color: rgba(255,255,255,0.78);
+  }
+  .ed-text p + p { margin-top: 22px; }
+  .ed-link {
+    display: inline-flex; align-items: center; gap: 12px; margin-top: 40px;
+    border-bottom: 1px solid var(--line-strong); padding-bottom: 8px;
+    font-size: 11px; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase;
+    transition: border-color .4s var(--ease);
+  }
+  .ed-link:hover { border-color: #fff; }
+  .ed-link svg { width: 14px; height: 14px; transition: transform .4s var(--ease); }
+  .ed-link:hover svg { transform: translate(4px, -4px); }
+
+  /* Parallax band */
+  .band {
+    position: relative; aspect-ratio: 21/9; overflow: hidden;
+    border-bottom: 1px solid var(--line);
+  }
+  .band img {
+    width: 100%; height: 100%; object-fit: cover;
+    transition: transform 8s linear;
+    filter: grayscale(0.1) contrast(1.05);
+  }
+  .band:hover img { transform: scale(1.08); }
+  .band-caption {
+    position: absolute; left: 48px; bottom: 48px;
+    font-size: 10px; font-weight: 700; letter-spacing: 0.2em;
+    text-transform: uppercase;
+    background: rgba(5,5,5,0.6); padding: 8px 14px;
+    backdrop-filter: blur(8px); border-radius: 2px;
+  }
+
+  /* Gallery */
+  .gallery {
+    display: grid; grid-template-columns: 1fr 1fr;
+    border-bottom: 1px solid var(--line);
+  }
+  .gal-item {
+    position: relative; aspect-ratio: 4/3;
+    overflow: hidden; border-right: 1px solid var(--line);
+    cursor: pointer;
+  }
+  .gal-item:last-child { border-right: 0; }
+  .gal-item img {
+    width: 100%; height: 100%; object-fit: cover;
+    transition: transform 2.5s ease-out, filter .6s var(--ease);
+    filter: grayscale(0.3) brightness(0.65);
+  }
+  .gal-item:hover img { transform: scale(1.06); filter: grayscale(0) brightness(1); }
+  .gal-overlay {
+    position: absolute; inset: 0;
+    background: linear-gradient(180deg, rgba(0,0,0,0) 60%, rgba(0,0,0,0.7) 100%);
+    transition: opacity .5s var(--ease);
+  }
+  .gal-caption {
+    position: absolute; left: 32px; bottom: 32px;
+    opacity: 0; transform: translateY(12px);
+    transition: opacity .5s var(--ease), transform .5s var(--ease);
+  }
+  .gal-item:hover .gal-caption { opacity: 1; transform: translateY(0); }
+  .gal-caption .lbl {
+    font-size: 10px; font-weight: 700; letter-spacing: 0.2em;
+    text-transform: uppercase; color: var(--muted); display: block; margin-bottom: 6px;
+  }
+  .gal-caption .ttl {
+    font-family: 'Clash Display', sans-serif; font-weight: 500;
+    font-size: 22px; letter-spacing: -0.03em;
+  }
+
+  /* Listings */
+  .listings {
+    padding: 140px 48px;
+    border-bottom: 1px solid var(--line);
+    position: relative; overflow: hidden;
+  }
+  .listings .leak-blue {
+    top: 30%; right: -10%; width: 500px; height: 500px;
+  }
+  .listings-head {
+    display: grid; grid-template-columns: 3fr 9fr;
+    gap: 100px; align-items: end;
+    margin-bottom: 80px; position: relative;
+  }
+  .listings-head .ed-label { margin-bottom: 0; }
+  .listings-head h3 {
+    font-family: 'Clash Display', sans-serif; font-weight: 700;
+    font-size: clamp(36px, 5vw, 72px); letter-spacing: -0.05em; line-height: 0.95;
+    max-width: 18ch;
+  }
+  .list-grid {
+    display: grid; grid-template-columns: repeat(3, 1fr); gap: 32px;
+    position: relative;
+  }
+  .list-card {
+    border: 1px solid var(--line); border-radius: 2px; overflow: hidden;
+    transition: border-color .6s var(--ease), transform .6s var(--ease);
+    background: rgba(255,255,255,0.01);
+  }
+  .list-card:hover { border-color: var(--line-strong); transform: translateY(-4px); }
+  .list-img {
+    aspect-ratio: 4/3; overflow: hidden;
+  }
+  .list-img img {
+    width: 100%; height: 100%; object-fit: cover;
+    transition: transform 2.5s ease-out;
+    filter: grayscale(0.15);
+  }
+  .list-card:hover .list-img img { transform: scale(1.07); filter: grayscale(0); }
+  .list-body { padding: 28px; }
+  .list-tag {
+    font-size: 10px; font-weight: 700; letter-spacing: 0.2em;
+    text-transform: uppercase; color: var(--muted); margin-bottom: 14px;
+  }
+  .list-name {
+    font-family: 'Clash Display', sans-serif; font-weight: 500;
+    font-size: 24px; letter-spacing: -0.03em; margin-bottom: 8px; line-height: 1.1;
+  }
+  .list-loc {
+    font-size: 13px; color: rgba(255,255,255,0.5); font-weight: 300; margin-bottom: 22px;
+  }
+  .list-meta {
+    display: flex; justify-content: space-between; align-items: center;
+    font-size: 11px; padding-top: 18px;
+    border-top: 1px solid var(--line);
+    font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase;
+  }
+  .list-price { color: #fff; }
+  .list-status { color: var(--muted); }
+
+  /* Footer */
+  .ftr {
+    background: var(--bg-deep);
+    position: relative; overflow: hidden;
+    padding: 160px 48px 60px;
+    text-align: center;
+  }
+  .ftr .leak-orange { top: -30%; left: -10%; width: 600px; height: 600px; opacity: 0.7; }
+  .ftr .leak-blue { bottom: -40%; right: -10%; width: 600px; height: 600px; opacity: 0.7; }
+  .ftr-label {
+    font-size: 10px; font-weight: 700; letter-spacing: 0.3em;
+    text-transform: uppercase; color: var(--muted); margin-bottom: 48px;
+    position: relative;
+  }
+  .ftr-cta {
+    font-family: 'Clash Display', sans-serif; font-weight: 700;
+    font-size: clamp(36px, 7vw, 110px); letter-spacing: -0.05em;
+    line-height: 1; position: relative;
+    display: inline-block;
+    border-bottom: 1px solid var(--line-strong); padding-bottom: 18px;
+    transition: opacity .4s var(--ease), border-color .4s var(--ease);
+    word-break: break-word;
+  }
+  .ftr-cta:hover { opacity: 0.55; border-bottom-color: #fff; border-bottom-width: 2px; }
+  .ftr-social {
+    margin-top: 100px; display: flex; justify-content: center; gap: 36px;
+    font-size: 10px; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase;
+    position: relative;
+  }
+  .ftr-social a { color: var(--muted); transition: color .3s var(--ease); }
+  .ftr-social a:hover { color: #fff; }
+  .ftr-ghost {
+    position: absolute; left: 50%; bottom: -8%;
+    transform: translateX(-50%);
+    font-family: 'Clash Display', sans-serif; font-weight: 700;
+    font-size: 26vw; letter-spacing: -0.06em;
+    color: rgba(255,255,255,0.04);
+    pointer-events: none; white-space: nowrap; line-height: 1;
+  }
+  .ftr-bottom {
+    margin-top: 80px; font-size: 10px;
+    color: rgba(255,255,255,0.25);
+    letter-spacing: 0.2em; text-transform: uppercase; position: relative;
+  }
+
+  /* Reveal-up */
+  .reveal { opacity: 0; transform: translateY(40px); transition: opacity 1s var(--ease), transform 1s var(--ease); }
+  .reveal.in { opacity: 1; transform: translateY(0); }
+
+  /* Responsive */
+  @media (max-width: 1100px) {
+    .nav { padding: 24px 32px; }
+    .nav-links { gap: 24px; }
+    .hero { padding: 140px 32px 80px; }
+    .hero-meta-l, .hero-meta-r { display: none; }
+    .hero-side { position: static; max-width: 100%; margin-top: 60px; }
+    .stats { grid-template-columns: repeat(2, 1fr); }
+    .stat:nth-child(2) { border-right: 0; }
+    .stat:nth-child(1), .stat:nth-child(2) { border-bottom: 1px solid var(--line); }
+    .editorial { grid-template-columns: 1fr; gap: 40px; padding: 100px 32px; }
+    .ed-num { position: static; }
+    .listings { padding: 100px 32px; }
+    .listings-head { grid-template-columns: 1fr; gap: 24px; margin-bottom: 56px; }
+    .list-grid { grid-template-columns: 1fr; gap: 24px; }
+    .gallery { grid-template-columns: 1fr; }
+    .gal-item { border-right: 0; border-bottom: 1px solid var(--line); }
+    .ftr { padding: 100px 32px 40px; }
+  }
+  @media (max-width: 700px) {
+    .nav { padding: 18px 20px; }
+    .nav-links { display: none; }
+    .nav-brand { font-size: 18px; }
+    .hero { padding: 120px 20px 60px; }
+    .hero-title { font-size: 22vw; left: 0; }
+    .ed-text { font-size: 17px; }
+    .band-caption { left: 20px; bottom: 20px; }
+  }
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <a href="#" class="nav-brand">MERIDIAN</a>
+  <ul class="nav-links">
+    <li><a href="#approach">Approach</a></li>
+    <li><a href="#districts">Districts</a></li>
+    <li><a href="#listings">Listings</a></li>
+  </ul>
+  <a href="#contact" class="nav-cta">Inquire</a>
+</nav>
+
+<section class="hero">
+  <div class="leak leak-orange"></div>
+  <div class="leak leak-blue"></div>
+  <div class="hero-meta-l">Est. 1992 · Private Brokerage</div>
+  <div class="hero-meta-r">NY · Miami · Aspen · Palm Beach</div>
+  <div class="hero-inner">
+    <div class="hero-img reveal">
+      <img src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=1200&auto=format&fit=crop&q=80" alt="Featured residence" />
+    </div>
+    <div class="hero-title display">RARE</div>
+  </div>
+  <div class="hero-side">
+    <strong>The Brief</strong>
+    A private brokerage representing thirty-two residences across the most considered addresses in North America.
+  </div>
+</section>
+
+<section class="stats" id="stats">
+  <div class="stat" data-delay="0">
+    <div class="stat-label">Active Portfolio</div>
+    <div class="stat-value display">247 Residences</div>
+  </div>
+  <div class="stat" data-delay="100">
+    <div class="stat-label">Aggregate Volume</div>
+    <div class="stat-value display">$2.4B Closed</div>
+  </div>
+  <div class="stat" data-delay="200">
+    <div class="stat-label">List-to-Sale Ratio</div>
+    <div class="stat-value display">98.4%</div>
+  </div>
+  <div class="stat" data-delay="300">
+    <div class="stat-label">Years in Practice</div>
+    <div class="stat-value display">32</div>
+  </div>
+</section>
+
+<section class="editorial" id="approach">
+  <div class="leak leak-orange" style="top: 10%; left: -8%;"></div>
+  <div class="ed-num display reveal">01</div>
+  <div class="ed-body reveal">
+    <div class="ed-label">The Approach</div>
+    <h2 class="ed-heading">We do not list. We represent.</h2>
+    <div class="ed-text">
+      <p>Our work begins long before a property reaches the market, and continues long after closing. Each address is presented with the rigor of an editorial: writing, photography, pacing, and discretion built for one buyer, not the algorithm.</p>
+      <p>Meridian is a private practice. We accept eleven mandates per quarter, by referral, in cities where transactions are quiet and references matter more than reach.</p>
+    </div>
+    <a href="#contact" class="ed-link">
+      Read the methodology
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M7 7h10v10"/></svg>
+    </a>
+  </div>
+</section>
+
+<div class="band reveal">
+  <img src="https://images.unsplash.com/photo-1512917774080-9991f1c4c750?w=1800&auto=format&fit=crop&q=80" alt="Tribeca loft" />
+  <div class="band-caption">Tribeca · Loft 4B · 6,200 sqft</div>
+</div>
+
+<section class="editorial" id="districts">
+  <div class="leak leak-blue" style="bottom: 5%; right: -8%;"></div>
+  <div class="ed-num display reveal">02</div>
+  <div class="ed-body reveal">
+    <div class="ed-label">Districts</div>
+    <h2 class="ed-heading">Eleven neighborhoods. One standard.</h2>
+    <div class="ed-text">
+      <p>From the West Village to Brickell, from the Roaring Fork Valley to Palm Beach, Meridian operates in the corridors where the work is not transactional. It is custodial.</p>
+      <p>Every district has its own grammar. We've spent thirty-two years learning to read it.</p>
+    </div>
+    <a href="#listings" class="ed-link">
+      View current portfolio
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M7 7h10v10"/></svg>
+    </a>
+  </div>
+</section>
+
+<div class="gallery">
+  <div class="gal-item reveal">
+    <img src="https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=1200&auto=format&fit=crop&q=80" alt="Modern villa" />
+    <div class="gal-overlay"></div>
+    <div class="gal-caption">
+      <span class="lbl">Aspen</span>
+      <span class="ttl display">The Highlands Estate</span>
+    </div>
+  </div>
+  <div class="gal-item reveal">
+    <img src="https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=1200&auto=format&fit=crop&q=80" alt="Modern interior" />
+    <div class="gal-overlay"></div>
+    <div class="gal-caption">
+      <span class="lbl">Miami Beach</span>
+      <span class="ttl display">1248 Brickell Bay</span>
+    </div>
+  </div>
+</div>
+
+<section class="listings" id="listings">
+  <div class="leak leak-blue"></div>
+  <div class="listings-head">
+    <div class="ed-label">Current Portfolio</div>
+    <h3 class="display">Selected residences, presented quietly.</h3>
+  </div>
+  <div class="list-grid">
+    <article class="list-card reveal">
+      <div class="list-img">
+        <img src="https://images.unsplash.com/photo-1600210492493-0946911123ea?w=900&auto=format&fit=crop&q=80" alt="Upper East Side townhouse" />
+      </div>
+      <div class="list-body">
+        <div class="list-tag">Upper East Side</div>
+        <h4 class="list-name">The Carlyle Townhouse</h4>
+        <p class="list-loc">73rd & Madison, New York</p>
+        <div class="list-meta">
+          <span class="list-price">$24.8M</span>
+          <span class="list-status">By Appointment</span>
+        </div>
+      </div>
+    </article>
+    <article class="list-card reveal">
+      <div class="list-img">
+        <img src="https://images.unsplash.com/photo-1613977257363-707ba9348227?w=900&auto=format&fit=crop&q=80" alt="Brickell waterfront residence" />
+      </div>
+      <div class="list-body">
+        <div class="list-tag">Brickell Key</div>
+        <h4 class="list-name">1248 Bay Residence</h4>
+        <p class="list-loc">Brickell Key, Miami</p>
+        <div class="list-meta">
+          <span class="list-price">$12.4M</span>
+          <span class="list-status">In Contract</span>
+        </div>
+      </div>
+    </article>
+    <article class="list-card reveal">
+      <div class="list-img">
+        <img src="https://images.unsplash.com/photo-1505691938895-1758d7feb511?w=900&auto=format&fit=crop&q=80" alt="Aspen mountain estate" />
+      </div>
+      <div class="list-body">
+        <div class="list-tag">Aspen Highlands</div>
+        <h4 class="list-name">The Maroon Estate</h4>
+        <p class="list-loc">Roaring Fork Valley, CO</p>
+        <div class="list-meta">
+          <span class="list-price">$38.2M</span>
+          <span class="list-status">Coming Q3</span>
+        </div>
+      </div>
+    </article>
+  </div>
+</section>
+
+<section class="editorial" id="contact">
+  <div class="leak leak-orange" style="top: 10%; right: -8%;"></div>
+  <div class="ed-num display reveal">03</div>
+  <div class="ed-body reveal">
+    <div class="ed-label">Inquiries</div>
+    <h2 class="ed-heading">We respond personally, within seven days.</h2>
+    <div class="ed-text">
+      <p>Whether you are a prospective seller considering a quiet exit, or a buyer awaiting the right address, write to the concierge below. Every inquiry is read, replied to, and held in confidence.</p>
+    </div>
+    <a href="#" class="ed-link">
+      Submit a brief
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M7 7h10v10"/></svg>
+    </a>
+  </div>
+</section>
+
+<footer class="ftr">
+  <div class="leak leak-orange"></div>
+  <div class="leak leak-blue"></div>
+  <div class="ftr-label">Concierge</div>
+  <a href="mailto:concierge@meridian.realty" class="ftr-cta display">concierge@meridian.realty</a>
+  <div class="ftr-social">
+    <a href="#">Instagram</a>
+    <a href="#">LinkedIn</a>
+    <a href="#">Press</a>
+    <a href="#">Privacy</a>
+  </div>
+  <div class="ftr-bottom">© Meridian Brokerage · Licensed NY · FL · CO</div>
+  <div class="ftr-ghost display">MERIDIAN</div>
+</footer>
+
+<script>
+  // Reveal on scroll
+  const io = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        const d = e.target.dataset.delay;
+        if (d) e.target.style.transitionDelay = (parseInt(d, 10) / 1000) + 's';
+        e.target.classList.add('in');
+        io.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.15 });
+  document.querySelectorAll('.reveal, .stat').forEach(el => io.observe(el));
+</script>
+</body>
+</html>
