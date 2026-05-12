@@ -404,15 +404,19 @@
 
   /* PORTRAIT FEATURE */
   .portrait-feature {
-    padding: 100px 0 0; background: var(--bg);
+    padding: 80px 0 0; background: var(--bg);
+    display: flex; justify-content: center;
+  }
+  .portrait-feature .container {
+    display: flex; justify-content: center;
   }
   .portrait-large {
-    width: 100%; max-width: 1100px; margin: 0 auto;
-    aspect-ratio: 16 / 9; height: auto;
+    width: 340px; height: 420px;
+    margin: 0 auto;
   }
   @media (max-width: 700px) {
     .portrait-feature { padding: 60px 0 0; }
-    .portrait-large { aspect-ratio: 4 / 5; }
+    .portrait-large { width: 280px; height: 360px; }
   }
 
   /* RESULTS — same pattern but distinct numbering */
