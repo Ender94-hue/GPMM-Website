@@ -404,19 +404,43 @@
 
   /* PORTRAIT FEATURE */
   .portrait-feature {
-    padding: 80px 0 0; background: var(--bg);
-    display: flex; justify-content: center;
+    padding: 100px 0 60px; background: var(--bg);
   }
-  .portrait-feature .container {
-    display: flex; justify-content: center;
+  .portrait-feature-grid {
+    display: grid; grid-template-columns: 1fr auto;
+    gap: 80px; align-items: center;
+  }
+  .portrait-quote {
+    font-family: 'Clash Grotesk', sans-serif;
+    font-size: clamp(28px, 3.2vw, 44px);
+    font-weight: 500; line-height: 1.15; letter-spacing: -0.02em;
+    color: var(--text); max-width: 620px;
+    position: relative;
+  }
+  .portrait-quote p { margin: 0; }
+  .portrait-quote .italic { font-style: italic; color: var(--taupe); }
+  .portrait-quote .quote-mark {
+    font-family: 'Clash Grotesk', sans-serif;
+    font-size: 120px; line-height: 0.6;
+    color: var(--coral); display: block;
+    margin-bottom: 16px; letter-spacing: -0.04em;
+  }
+  .portrait-quote footer {
+    margin-top: 28px; font-family: 'Satoshi', sans-serif;
+    font-size: 12px; font-weight: 500; letter-spacing: 0.14em;
+    text-transform: uppercase; color: var(--text-dim);
   }
   .portrait-large {
-    width: 340px; height: 420px;
-    margin: 0 auto;
+    width: 340px; height: 420px; flex-shrink: 0;
   }
-  @media (max-width: 700px) {
-    .portrait-feature { padding: 60px 0 0; }
-    .portrait-large { width: 280px; height: 360px; }
+  @media (max-width: 900px) {
+    .portrait-feature { padding: 70px 0 40px; }
+    .portrait-feature-grid {
+      grid-template-columns: 1fr; gap: 48px;
+    }
+    .portrait-large { width: 280px; height: 360px; margin: 0 auto; }
+    .portrait-quote { text-align: center; max-width: 540px; margin: 0 auto; }
+    .portrait-quote .quote-mark { text-align: center; }
   }
 
   /* RESULTS — same pattern but distinct numbering */
@@ -837,12 +861,19 @@
 <!-- PORTRAIT FEATURE -->
 <section class="portrait-feature">
   <div class="container">
-    <div class="portrait portrait-large" data-hov>
-      <img src="ender.jpg" alt="Ender M Rivero" onerror="this.style.display='none'; this.parentNode.style.background='var(--surface)'; this.parentNode.insertAdjacentHTML('beforeend','<div style=&quot;position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-family:Clash Grotesk;font-size:160px;font-weight:600;color:var(--taupe);letter-spacing:-0.04em&quot;>EM</div>')" />
-      <div class="portrait-label">
-        <div>
-          <strong>Ender M Rivero</strong>
-          <span>CEO · GPMM</span>
+    <div class="portrait-feature-grid">
+      <blockquote class="portrait-quote">
+        <span class="quote-mark">"</span>
+        <p>Vender es la vida de tu empresa; es ayudar a los demás a <span class="italic">mejorar su vida</span> con tu producto.</p>
+        <footer>— Ender M Rivero</footer>
+      </blockquote>
+      <div class="portrait portrait-large" data-hov>
+        <img src="ender.jpg" alt="Ender M Rivero" onerror="this.style.display='none'; this.parentNode.style.background='var(--surface)'; this.parentNode.insertAdjacentHTML('beforeend','<div style=&quot;position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-family:Clash Grotesk;font-size:160px;font-weight:600;color:var(--taupe);letter-spacing:-0.04em&quot;>EM</div>')" />
+        <div class="portrait-label">
+          <div>
+            <strong>Ender M Rivero</strong>
+            <span>CEO · GPMM</span>
+          </div>
         </div>
       </div>
     </div>
