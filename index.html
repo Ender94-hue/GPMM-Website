@@ -251,6 +251,13 @@
     position: absolute; top: -40px; right: -40px;
     width: 160px; height: 160px;
   }
+  .spin-badge-large {
+    position: relative; top: 0; right: 0;
+    width: 320px; height: 320px;
+  }
+  .spin-badge-large text { font-size: 11.5px; letter-spacing: 3.5px; }
+  .spin-badge-large .center { width: 96px; height: 96px; }
+  .spin-badge-large .center svg { width: 30px; height: 30px; }
   .spin-badge svg { width: 100%; height: 100%; animation: spin 22s linear infinite; }
   .spin-badge text {
     font-family: 'Satoshi', sans-serif; font-size: 12.5px; letter-spacing: 4px;
@@ -394,6 +401,19 @@
     transform: translateX(0); opacity: 1;
   }
   .service-row:hover .service-arrow { background: rgba(235,89,57,0.08); }
+
+  /* PORTRAIT FEATURE */
+  .portrait-feature {
+    padding: 100px 0 0; background: var(--bg);
+  }
+  .portrait-large {
+    width: 100%; max-width: 1100px; margin: 0 auto;
+    aspect-ratio: 16 / 9; height: auto;
+  }
+  @media (max-width: 700px) {
+    .portrait-feature { padding: 60px 0 0; }
+    .portrait-large { aspect-ratio: 4 / 5; }
+  }
 
   /* RESULTS — same pattern but distinct numbering */
   .results { background: var(--surface-2); }
@@ -672,16 +692,7 @@
         </div>
       </div>
       <div class="hero-side">
-        <div class="portrait" data-hov>
-          <img src="ender.jpg" alt="Ender M Rivero" onerror="this.style.display='none'; this.parentNode.style.background='var(--surface)'; this.parentNode.insertAdjacentHTML('beforeend','<div style=&quot;position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-family:Clash Grotesk;font-size:120px;font-weight:600;color:var(--taupe);letter-spacing:-0.04em&quot;>EM</div>')" />
-          <div class="portrait-label">
-            <div>
-              <strong>Ender M Rivero</strong>
-              <span>CEO · GPMM</span>
-            </div>
-          </div>
-        </div>
-        <div class="spin-badge">
+        <div class="spin-badge spin-badge-large">
           <svg viewBox="0 0 200 200">
             <defs>
               <path id="circle" d="M 100, 100 m -75, 0 a 75,75 0 1,1 150,0 a 75,75 0 1,1 -150,0"/>
@@ -814,6 +825,21 @@
         <div class="service-title">Escalado predecible</div>
         <div class="service-desc">Sistemas, métricas y procesos para que tu facturación deje de depender de la suerte.</div>
         <div class="service-arrow"><svg width="20" height="20"><use href="#i-arrow"/></svg></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PORTRAIT FEATURE -->
+<section class="portrait-feature">
+  <div class="container">
+    <div class="portrait portrait-large" data-hov>
+      <img src="ender.jpg" alt="Ender M Rivero" onerror="this.style.display='none'; this.parentNode.style.background='var(--surface)'; this.parentNode.insertAdjacentHTML('beforeend','<div style=&quot;position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-family:Clash Grotesk;font-size:160px;font-weight:600;color:var(--taupe);letter-spacing:-0.04em&quot;>EM</div>')" />
+      <div class="portrait-label">
+        <div>
+          <strong>Ender M Rivero</strong>
+          <span>CEO · GPMM</span>
+        </div>
       </div>
     </div>
   </div>
