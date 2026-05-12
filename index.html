@@ -633,8 +633,9 @@
   @media (max-width: 700px) {
     .container { padding: 0 24px; }
     section.std { padding: 90px 0; }
-    .hero { padding: 130px 0 90px; }
+    .hero { padding: 130px 0 60px; }
     .hero-stats { flex-wrap: wrap; gap: 24px; }
+    .hero-side { display: none; }
     .service-row { grid-template-columns: 50px 1fr 40px; gap: 16px; padding: 28px 8px; }
     .service-row .service-desc { display: none; }
     .process-grid { grid-template-columns: 1fr; }
@@ -643,6 +644,16 @@
     .offer-card { padding: 48px 28px; }
     .nav-inner { padding: 18px 24px; }
     .spin-badge { width: 120px; height: 120px; top: -20px; right: -20px; }
+  }
+
+  /* Mobile CTA after proofs */
+  .proofs-cta {
+    display: flex; justify-content: center;
+    margin-top: 40px;
+  }
+  .proofs-cta .pill-btn { padding: 14px 26px; }
+  @media (min-width: 901px) {
+    .proofs-cta { display: none; }
   }
 </style>
 </head>
@@ -804,6 +815,12 @@
         <p>"El lanzamiento que estructuramos con GPMM fue el más rentable de nuestra historia. Estrategia, copy y embudo, todo en un sólo lugar."</p>
         <div class="p-author"><div class="p-avatar">PM</div><div><div class="p-name">Paola Moreno</div><div class="p-role">CMO · Educación online</div></div></div>
       </div>
+    </div>
+    <div class="proofs-cta">
+      <a href="#oferta" class="pill-btn coral magnetic" data-hov>
+        Empezar ahora
+        <svg class="arr"><use href="#i-arrow"/></svg>
+      </a>
     </div>
   </div>
 </section>
