@@ -5,401 +5,606 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>GPMM — Lo importante es vender · Ender M Rivero</title>
 <meta name="description" content="GPMM ayuda a empresas a elevar su facturamiento con estrategias de ventas. Liderado por Ender M Rivero." />
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Playfair+Display:wght@700;900&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://api.fontshare.com" crossorigin>
+<link href="https://api.fontshare.com/v2/css?f[]=clash-grotesk@400,500,600,700&f[]=satoshi@400,500,700,900&display=swap" rel="stylesheet">
 <style>
   :root {
-    --bg: #0a0e1a;
-    --bg-2: #111726;
-    --bg-3: #1a2238;
-    --gold: #d4af37;
-    --gold-2: #f4d35e;
-    --blue: #3b82f6;
-    --blue-2: #60a5fa;
+    --bg: #0d0d0d;
+    --surface: #1a1a1a;
+    --surface-2: #141414;
+    --taupe: #b7ab98;
+    --coral: #eb5939;
+    --text: #ededed;
+    --text-dim: #8a8a85;
+    --line: rgba(118, 118, 118, 0.12);
+    --line-strong: rgba(183, 171, 152, 0.28);
     --whatsapp: #25D366;
-    --instagram: linear-gradient(135deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%);
-    --text: #e5e7eb;
-    --text-dim: #94a3b8;
-    --border: rgba(212, 175, 55, 0.15);
+    --ease: cubic-bezier(0.16, 1, 0.3, 1);
   }
   * { margin: 0; padding: 0; box-sizing: border-box; }
   html { scroll-behavior: smooth; }
   body {
-    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    font-family: 'Satoshi', system-ui, -apple-system, sans-serif;
     background: var(--bg);
     color: var(--text);
-    line-height: 1.6;
+    line-height: 1.55;
     overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
   }
-  .container { max-width: 1200px; margin: 0 auto; padding: 0 24px; }
+  /* Grain noise overlay */
+  body::after {
+    content: ''; position: fixed; inset: 0; pointer-events: none; z-index: 9998;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='300' height='300'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+    opacity: 0.03;
+    mix-blend-mode: overlay;
+  }
+
+  .container { max-width: 1400px; margin: 0 auto; padding: 0 36px; }
   a { color: inherit; text-decoration: none; }
+
+  /* Typography */
+  .clash { font-family: 'Clash Grotesk', 'Satoshi', sans-serif; }
+  .eyebrow {
+    display: inline-flex; align-items: center; gap: 14px;
+    font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase;
+    color: var(--text-dim); font-weight: 500;
+  }
+  .eyebrow::before {
+    content: ''; width: 36px; height: 1px; background: var(--taupe);
+  }
+  .eyebrow.coral { color: var(--coral); }
+  .eyebrow.coral::before { background: var(--coral); }
+
+  /* Custom cursor */
+  .cursor-dot, .cursor-ring {
+    position: fixed; top: 0; left: 0; pointer-events: none; z-index: 10000;
+    border-radius: 50%; transform: translate(-50%, -50%);
+  }
+  .cursor-dot { width: 8px; height: 8px; background: var(--coral); transition: transform .15s var(--ease); }
+  .cursor-ring {
+    width: 40px; height: 40px; border: 1px solid var(--taupe);
+    transition: width .35s var(--ease), height .35s var(--ease), background .35s var(--ease), border-color .35s var(--ease), transform .15s linear;
+  }
+  .cursor-ring.hov {
+    width: 64px; height: 64px;
+    background: rgba(235, 89, 57, 0.08); border-color: var(--coral);
+  }
+  @media (hover: none), (max-width: 900px) {
+    .cursor-dot, .cursor-ring { display: none; }
+    body { cursor: auto; }
+  }
+
+  /* Reveal animations */
+  .reveal-line { overflow: hidden; display: block; }
+  .reveal-line > span {
+    display: block; transform: translateY(115%);
+    transition: transform 1.15s var(--ease);
+  }
+  .reveal-line.in > span { transform: translateY(0); }
+  .fade-up { opacity: 0; transform: translateY(24px); transition: opacity 1s var(--ease), transform 1s var(--ease); }
+  .fade-up.in { opacity: 1; transform: translateY(0); }
 
   /* NAV */
   nav {
-    position: sticky; top: 0; z-index: 100;
-    background: rgba(10, 14, 26, 0.85);
-    backdrop-filter: blur(12px);
-    border-bottom: 1px solid var(--border);
+    position: fixed; top: 0; left: 0; right: 0; z-index: 90;
+    transition: background .6s var(--ease), border-color .6s var(--ease);
+    border-bottom: 1px solid transparent;
+  }
+  nav.scrolled {
+    background: rgba(13, 13, 13, 0.85);
+    backdrop-filter: blur(14px);
+    border-bottom-color: var(--line);
   }
   .nav-inner {
     display: flex; justify-content: space-between; align-items: center;
-    padding: 18px 24px; max-width: 1200px; margin: 0 auto;
+    padding: 22px 36px; max-width: 1400px; margin: 0 auto;
   }
-  .logo {
-    display: inline-flex; align-items: center; gap: 12px;
-    color: #ffffff;
+  .logo { display: inline-flex; align-items: center; gap: 14px; color: var(--text); }
+  .logo-mark {
+    font-family: 'Clash Grotesk', sans-serif; font-weight: 700;
+    font-size: 24px; letter-spacing: -0.02em; line-height: 1;
   }
-  .logo svg { width: 44px; height: 44px; display: block; flex-shrink: 0; }
+  .logo-mark .dot { color: var(--coral); }
   .logo-tagline {
-    display: block;
-    font-family: 'Inter', sans-serif;
-    font-size: 11px; font-weight: 600; letter-spacing: 1.5px;
-    text-transform: uppercase; line-height: 1.35;
-    color: var(--text);
-    max-width: 240px;
+    display: block; font-family: 'Satoshi', sans-serif;
+    font-size: 10px; font-weight: 500; letter-spacing: 0.14em;
+    text-transform: uppercase; line-height: 1.4; color: var(--text-dim);
+    max-width: 220px;
+    border-left: 1px solid var(--line); padding-left: 14px;
   }
-  .logo-tagline .amp { color: var(--gold); font-weight: 900; }
-  footer .logo-tagline { max-width: none; text-align: left; }
-  .nav-actions { display: flex; gap: 10px; align-items: center; }
-  .icon-btn {
-    width: 42px; height: 42px; border-radius: 50%;
-    display: inline-flex; align-items: center; justify-content: center;
-    transition: transform .2s, box-shadow .2s;
-    color: #ffffff;
+  .nav-links {
+    display: flex; gap: 32px; list-style: none;
   }
-  .icon-btn:hover { transform: translateY(-2px); }
-  .icon-btn svg { width: 22px; height: 22px; }
-  .icon-btn.ig { background: var(--instagram); box-shadow: 0 6px 18px rgba(220, 39, 67, 0.35); }
-  .icon-btn.wa { background: var(--whatsapp); box-shadow: 0 6px 18px rgba(37, 211, 102, 0.35); }
+  .nav-links a {
+    font-size: 11px; text-transform: uppercase; letter-spacing: 0.14em;
+    font-weight: 500; color: var(--text-dim);
+    position: relative; padding: 4px 0;
+  }
+  .nav-links a::after {
+    content: ''; position: absolute; left: 0; bottom: 0;
+    width: 100%; height: 1px; background: var(--taupe);
+    transform: scaleX(0); transform-origin: left;
+    transition: transform .6s var(--ease);
+  }
+  .nav-links a:hover { color: var(--text); }
+  .nav-links a:hover::after { transform: scaleX(1); }
+
+  .pill-btn {
+    display: inline-flex; align-items: center; gap: 10px;
+    padding: 12px 22px; border-radius: 999px;
+    border: 1px solid var(--line-strong);
+    font-size: 11px; text-transform: uppercase; letter-spacing: 0.14em;
+    font-weight: 500; color: var(--text);
+    transition: all .4s var(--ease);
+    background: transparent;
+  }
+  .pill-btn:hover {
+    background: var(--taupe); color: var(--bg); border-color: var(--taupe);
+    transform: translateY(-3px);
+  }
+  .pill-btn.coral:hover { background: var(--coral); border-color: var(--coral); color: #fff; }
+  .pill-btn .arr { width: 14px; height: 14px; }
+
+  .menu-toggle {
+    display: none; background: none; border: 1px solid var(--line-strong);
+    color: var(--text); width: 42px; height: 42px; border-radius: 50%;
+    align-items: center; justify-content: center; cursor: pointer;
+  }
+  .menu-toggle span {
+    display: block; width: 16px; height: 1px; background: currentColor; position: relative;
+  }
+  .menu-toggle span::before, .menu-toggle span::after {
+    content: ''; position: absolute; left: 0; width: 16px; height: 1px; background: currentColor;
+  }
+  .menu-toggle span::before { top: -5px; }
+  .menu-toggle span::after { top: 5px; }
+
+  .mobile-menu {
+    position: fixed; inset: 0; background: var(--bg); z-index: 95;
+    transform: translateX(100%); transition: transform .8s var(--ease);
+    display: flex; flex-direction: column; padding: 100px 36px 40px;
+  }
+  .mobile-menu.open { transform: translateX(0); }
+  .mobile-menu a {
+    font-family: 'Clash Grotesk', sans-serif; font-size: 36px; font-weight: 500;
+    padding: 18px 0; border-bottom: 1px solid var(--line);
+    opacity: 0; transform: translateY(20px);
+    transition: opacity .8s var(--ease), transform .8s var(--ease);
+  }
+  .mobile-menu.open a { opacity: 1; transform: translateY(0); }
+  .mobile-menu.open a:nth-child(1) { transition-delay: .15s; }
+  .mobile-menu.open a:nth-child(2) { transition-delay: .23s; }
+  .mobile-menu.open a:nth-child(3) { transition-delay: .31s; }
+  .mobile-menu.open a:nth-child(4) { transition-delay: .39s; }
+  .mobile-menu.open a:nth-child(5) { transition-delay: .47s; }
 
   /* HERO */
   .hero {
-    position: relative; padding: 100px 0 80px;
-    background:
-      radial-gradient(ellipse at top, rgba(59, 130, 246, 0.12) 0%, transparent 50%),
-      radial-gradient(ellipse at bottom right, rgba(212, 175, 55, 0.08) 0%, transparent 50%),
-      var(--bg);
-    overflow: hidden;
+    position: relative; padding: 180px 0 120px; overflow: hidden;
+  }
+  .hero::before, .hero::after {
+    content: ''; position: absolute; border-radius: 50%; pointer-events: none;
+    filter: blur(120px); opacity: 0.04;
   }
   .hero::before {
-    content: ''; position: absolute; inset: 0;
-    background-image:
-      linear-gradient(rgba(212, 175, 55, 0.03) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(212, 175, 55, 0.03) 1px, transparent 1px);
-    background-size: 60px 60px;
-    pointer-events: none;
+    width: 600px; height: 600px; background: var(--taupe);
+    top: -100px; left: -200px;
+  }
+  .hero::after {
+    width: 500px; height: 500px; background: var(--coral);
+    bottom: -100px; right: -100px;
   }
   .hero-grid {
-    position: relative; display: grid; grid-template-columns: 1.1fr 1fr;
-    gap: 60px; align-items: center;
+    position: relative; display: grid; grid-template-columns: 1.3fr 1fr;
+    gap: 80px; align-items: center;
   }
-  .badge {
-    display: inline-flex; align-items: center; gap: 8px;
-    padding: 8px 16px; border: 1px solid var(--border);
-    border-radius: 999px; font-size: 12px; letter-spacing: 1px;
-    color: var(--gold); text-transform: uppercase; font-weight: 600;
-    background: rgba(212, 175, 55, 0.05);
-    margin-bottom: 24px;
+  h1.display {
+    font-family: 'Clash Grotesk', sans-serif;
+    font-size: clamp(56px, 9vw, 130px);
+    line-height: 0.95; font-weight: 600; letter-spacing: -0.03em;
+    margin-top: 32px;
   }
-  .badge::before {
-    content: ''; width: 8px; height: 8px; border-radius: 50%;
-    background: var(--gold); box-shadow: 0 0 10px var(--gold);
-  }
-  h1 {
-    font-family: 'Playfair Display', serif;
-    font-size: clamp(36px, 5vw, 64px);
-    line-height: 1.15; font-weight: 900; margin-bottom: 24px;
-    letter-spacing: -0.5px;
-  }
-  h1 .gold {
-    background: linear-gradient(135deg, var(--gold) 0%, var(--gold-2) 100%);
-    -webkit-background-clip: text; background-clip: text; color: transparent;
-    font-style: italic;
-    padding: 0.05em 0.12em;
-    margin: 0 -0.04em;
-    display: inline-block;
-  }
+  h1.display .italic { font-style: italic; font-weight: 500; color: var(--taupe); }
+  h1.display .coral { color: var(--coral); }
+
   .hero-sub {
-    font-size: 19px; color: var(--text-dim); margin-bottom: 36px;
-    max-width: 540px;
+    font-size: 18px; color: var(--text-dim); margin-top: 36px;
+    max-width: 480px;
   }
   .hero-stats {
-    display: flex; gap: 32px; margin-top: 48px; padding-top: 32px;
-    border-top: 1px solid var(--border);
+    display: flex; gap: 48px; margin-top: 56px; padding-top: 36px;
+    border-top: 1px solid var(--line);
   }
   .stat strong {
-    font-family: 'Playfair Display', serif;
-    font-size: 32px; font-weight: 900; color: var(--gold); display: block;
+    font-family: 'Clash Grotesk', sans-serif;
+    font-size: 40px; font-weight: 600; color: var(--text); display: block;
+    letter-spacing: -0.02em;
   }
-  .stat span { font-size: 13px; color: var(--text-dim); }
+  .stat span { font-size: 12px; color: var(--text-dim); letter-spacing: 0.06em; text-transform: uppercase; }
 
-  /* CEO card */
-  .ceo-card {
-    position: relative; padding: 32px;
-    background: linear-gradient(180deg, var(--bg-2) 0%, var(--bg-3) 100%);
-    border: 1px solid var(--border); border-radius: 24px;
-    box-shadow: 0 30px 80px rgba(0, 0, 0, 0.5);
+  /* Spinning badge + portrait */
+  .hero-side {
+    position: relative; display: flex; align-items: center; justify-content: center;
+    min-height: 520px;
   }
-  .ceo-image {
-    width: 100%; aspect-ratio: 4/5; border-radius: 16px;
-    background:
-      linear-gradient(135deg, rgba(212, 175, 55, 0.2), rgba(59, 130, 246, 0.2)),
-      linear-gradient(180deg, #1e293b 0%, #0f172a 100%);
-    display: flex; align-items: center; justify-content: center;
-    position: relative; overflow: hidden;
+  .portrait {
+    position: relative; width: 340px; height: 420px;
+    background: var(--surface); border: 1px solid var(--line);
+    overflow: hidden;
   }
-  .ceo-image img {
+  .portrait img {
     width: 100%; height: 100%; object-fit: cover; display: block;
+    filter: grayscale(0.3) contrast(1.05);
+    transition: filter .8s var(--ease), transform .8s var(--ease);
   }
-  .ceo-image .initials {
-    font-family: 'Playfair Display', serif;
-    font-size: 96px; font-weight: 900; color: var(--gold);
-    text-shadow: 0 4px 30px rgba(212, 175, 55, 0.4);
+  .portrait:hover img { filter: grayscale(0) contrast(1); transform: scale(1.04); }
+  .portrait-label {
+    position: absolute; bottom: 0; left: 0; right: 0;
+    padding: 16px 18px; background: linear-gradient(0deg, rgba(13,13,13,0.95), transparent);
+    display: flex; align-items: flex-end; justify-content: space-between; gap: 10px;
   }
-  .ceo-info {
-    display: flex; align-items: center; justify-content: space-between;
-    margin-top: 20px;
+  .portrait-label strong {
+    font-family: 'Clash Grotesk', sans-serif; font-size: 16px; font-weight: 500;
+    display: block;
   }
-  .ceo-name { font-weight: 700; font-size: 18px; }
-  .ceo-role { color: var(--gold); font-size: 13px; letter-spacing: 1px; text-transform: uppercase; }
+  .portrait-label span {
+    font-size: 10px; color: var(--coral); letter-spacing: 0.14em; text-transform: uppercase;
+  }
+
+  .spin-badge {
+    position: absolute; top: -40px; right: -40px;
+    width: 160px; height: 160px;
+  }
+  .spin-badge svg { width: 100%; height: 100%; animation: spin 22s linear infinite; }
+  .spin-badge text {
+    font-family: 'Satoshi', sans-serif; font-size: 12.5px; letter-spacing: 4px;
+    text-transform: uppercase; fill: var(--text);
+  }
+  .spin-badge .center {
+    position: absolute; top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    width: 64px; height: 64px; border-radius: 50%;
+    background: var(--taupe); color: var(--bg);
+    display: flex; align-items: center; justify-content: center;
+    transition: background .4s var(--ease), transform .4s var(--ease);
+    cursor: pointer;
+  }
+  .spin-badge .center:hover { background: var(--coral); color: #fff; transform: translate(-50%, -50%) scale(1.08); }
+  .spin-badge .center svg { animation: none; width: 22px; height: 22px; transform: rotate(-45deg); }
+  @keyframes spin { from { transform: rotate(0); } to { transform: rotate(360deg); } }
+
+  /* MARQUEE */
+  .marquee {
+    border-top: 1px solid var(--line);
+    border-bottom: 1px solid var(--line);
+    overflow: hidden; padding: 36px 0;
+  }
+  .marquee-track {
+    display: flex; gap: 60px; white-space: nowrap;
+    animation: scroll 30s linear infinite;
+    font-family: 'Clash Grotesk', sans-serif;
+    font-size: clamp(40px, 6vw, 80px); font-weight: 500;
+    text-transform: uppercase; letter-spacing: -0.02em;
+  }
+  .marquee:hover .marquee-track { animation-play-state: paused; }
+  .marquee-track span { display: inline-flex; align-items: center; gap: 60px; color: var(--text); }
+  .marquee-track .star { color: var(--coral); font-size: 0.6em; }
+  .marquee-track .out {
+    -webkit-text-stroke: 1px var(--taupe);
+    color: transparent;
+  }
+  @keyframes scroll {
+    from { transform: translateX(0); }
+    to { transform: translateX(-50%); }
+  }
 
   /* SECTION BASE */
-  section { padding: 100px 0; position: relative; }
-  .section-tag {
-    text-align: center; color: var(--gold); font-size: 12px;
-    letter-spacing: 3px; text-transform: uppercase; font-weight: 700;
-    margin-bottom: 16px;
+  section.std { padding: 140px 0; position: relative; }
+  .section-head {
+    display: grid; grid-template-columns: 1fr 1.4fr; gap: 60px;
+    margin-bottom: 80px; align-items: end;
   }
   .section-title {
-    font-family: 'Playfair Display', serif;
-    text-align: center; font-size: clamp(30px, 4vw, 48px);
-    font-weight: 900; line-height: 1.1; margin-bottom: 20px;
-    letter-spacing: -0.5px;
+    font-family: 'Clash Grotesk', sans-serif;
+    font-size: clamp(40px, 5.5vw, 76px);
+    font-weight: 500; line-height: 1; letter-spacing: -0.03em;
   }
-  .section-title .gold {
-    background: linear-gradient(135deg, var(--gold), var(--gold-2));
-    -webkit-background-clip: text; background-clip: text; color: transparent;
-    font-style: italic;
-    padding: 0.05em 0.12em;
-    margin: 0 -0.04em;
-    display: inline-block;
-  }
+  .section-title .italic { font-style: italic; color: var(--taupe); font-weight: 500; }
+  .section-title .coral { color: var(--coral); }
   .section-sub {
-    text-align: center; color: var(--text-dim); font-size: 18px;
-    max-width: 720px; margin: 0 auto 60px;
+    color: var(--text-dim); font-size: 17px; max-width: 480px;
+    margin-left: auto;
   }
 
-  /* SOCIAL PROOFS (5) */
-  .proofs { background: var(--bg-2); }
+  /* SOCIAL PROOFS — 2-col grid w/ big numerals */
+  .proofs { background: var(--bg); }
   .proof-grid {
-    display: grid; grid-template-columns: repeat(6, 1fr); gap: 20px;
+    display: grid; grid-template-columns: repeat(2, 1fr); gap: 32px;
   }
   .proof {
-    padding: 28px; border-radius: 20px;
-    background: linear-gradient(180deg, var(--bg-3), var(--bg));
-    border: 1px solid var(--border);
-    position: relative;
-    transition: all .25s;
+    position: relative; padding: 36px;
+    background: var(--surface); border: 1px solid var(--line);
+    transition: border-color .5s var(--ease), transform .5s var(--ease);
+    overflow: hidden;
   }
-  .proof:hover { transform: translateY(-4px); border-color: var(--gold); }
-  .proof:nth-child(1), .proof:nth-child(2), .proof:nth-child(3) { grid-column: span 2; }
-  .proof:nth-child(4), .proof:nth-child(5) { grid-column: span 3; }
-  .proof::before {
-    content: '"'; position: absolute; top: 12px; right: 22px;
-    font-family: 'Playfair Display', serif; font-size: 70px;
-    color: var(--gold); opacity: 0.2; line-height: 1;
+  .proof:hover { border-color: var(--line-strong); transform: translateY(-4px); }
+  .proof-num {
+    position: absolute; top: 16px; right: 22px;
+    font-family: 'Clash Grotesk', sans-serif; font-weight: 600;
+    font-size: 72px; line-height: 1; color: var(--text);
+    opacity: 0.06; letter-spacing: -0.04em;
   }
-  .stars { color: var(--gold); margin-bottom: 14px; letter-spacing: 2px; font-size: 14px; }
-  .proof p { color: var(--text); margin-bottom: 22px; font-size: 15px; }
+  .stars { color: var(--coral); margin-bottom: 18px; letter-spacing: 4px; font-size: 12px; }
   .proof-result {
     display: inline-block;
-    background: linear-gradient(135deg, rgba(212, 175, 55, 0.2), rgba(212, 175, 55, 0.05));
-    border: 1px solid var(--gold);
-    color: var(--gold);
+    border: 1px solid var(--taupe);
+    color: var(--taupe);
     padding: 6px 14px; border-radius: 999px;
-    font-weight: 700; font-size: 13px;
-    margin-bottom: 18px;
+    font-weight: 500; font-size: 12px;
+    margin-bottom: 22px; letter-spacing: 0.04em;
   }
-  .p-author { display: flex; align-items: center; gap: 12px; }
+  .proof p {
+    color: var(--text); margin-bottom: 28px; font-size: 16px;
+    font-family: 'Clash Grotesk', sans-serif; font-weight: 400;
+    line-height: 1.4; letter-spacing: -0.01em;
+  }
+  .p-author { display: flex; align-items: center; gap: 14px; padding-top: 18px; border-top: 1px solid var(--line); }
   .p-avatar {
-    width: 44px; height: 44px; border-radius: 50%;
-    background: linear-gradient(135deg, var(--gold), var(--blue));
+    width: 42px; height: 42px; border-radius: 50%;
+    background: var(--bg); border: 1px solid var(--line-strong);
     display: flex; align-items: center; justify-content: center;
-    font-weight: 700; color: #0a0e1a; font-size: 15px;
+    font-weight: 600; color: var(--taupe); font-size: 13px;
+    font-family: 'Clash Grotesk', sans-serif;
   }
-  .p-name { font-weight: 700; font-size: 14px; }
-  .p-role { color: var(--text-dim); font-size: 12px; }
+  .p-name { font-weight: 500; font-size: 14px; }
+  .p-role { color: var(--text-dim); font-size: 12px; letter-spacing: 0.04em; }
 
-  /* BENEFITS GRID */
-  .benefits { background: var(--bg); }
-  .benefits-grid {
-    display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px;
+  /* SERVICES ROWS (formerly benefits) */
+  .services { background: var(--bg); }
+  .service-row {
+    display: grid; grid-template-columns: 80px 1fr 1.3fr 60px;
+    gap: 40px; align-items: center;
+    padding: 36px 16px; border-top: 1px solid var(--line);
+    position: relative; cursor: pointer;
+    transition: transform .6s var(--ease), padding .6s var(--ease);
   }
-  .benefit {
-    padding: 32px; border-radius: 20px;
-    background: linear-gradient(180deg, var(--bg-2) 0%, rgba(26, 34, 56, 0.5) 100%);
-    border: 1px solid var(--border);
-    transition: all .3s;
+  .services .service-row:last-child { border-bottom: 1px solid var(--line); }
+  .service-row:hover { transform: translateX(16px); }
+  .service-num {
+    font-family: 'Clash Grotesk', sans-serif;
+    font-size: 14px; font-weight: 500; color: var(--text-dim);
+    letter-spacing: 0.06em;
   }
-  .benefit:hover {
-    transform: translateY(-6px);
-    border-color: var(--gold);
-    box-shadow: 0 20px 50px rgba(212, 175, 55, 0.1);
+  .service-title {
+    font-family: 'Clash Grotesk', sans-serif;
+    font-size: clamp(28px, 3.5vw, 44px); font-weight: 500;
+    letter-spacing: -0.02em; line-height: 1.05;
   }
-  .benefit-icon {
-    width: 56px; height: 56px; border-radius: 14px;
-    background: linear-gradient(135deg, rgba(212, 175, 55, 0.15), rgba(212, 175, 55, 0.05));
-    border: 1px solid var(--border);
+  .service-desc {
+    color: var(--text-dim); font-size: 15px;
+    max-height: 0; overflow: hidden; opacity: 0;
+    transition: max-height .6s var(--ease), opacity .6s var(--ease);
+  }
+  .service-row:hover .service-desc { max-height: 160px; opacity: 1; }
+  .service-arrow {
+    width: 48px; height: 48px; border-radius: 50%;
+    border: 1px solid var(--line-strong);
     display: flex; align-items: center; justify-content: center;
-    font-size: 24px; margin-bottom: 20px;
-    color: var(--gold);
+    color: var(--coral);
+    transform: translateX(-30px); opacity: 0;
+    transition: transform .6s var(--ease), opacity .6s var(--ease), background .4s var(--ease);
   }
-  .benefit h3 { font-size: 19px; margin-bottom: 10px; font-weight: 700; }
-  .benefit p { color: var(--text-dim); font-size: 15px; }
+  .service-row:hover .service-arrow {
+    transform: translateX(0); opacity: 1;
+  }
+  .service-row:hover .service-arrow { background: rgba(235,89,57,0.08); }
 
-  /* MODULES (now: what companies gain) */
-  .modules { background: var(--bg-2); }
-  .module-list { max-width: 860px; margin: 0 auto; }
-  .module {
-    display: flex; gap: 24px; padding: 28px;
-    border: 1px solid var(--border); border-radius: 16px;
-    margin-bottom: 16px; transition: all .25s;
-    background: var(--bg);
-    align-items: center;
-  }
-  .module:hover { border-color: var(--gold); transform: translateX(4px); }
-  .module-num {
-    font-family: 'Playfair Display', serif;
-    font-size: 36px; font-weight: 900; color: var(--gold);
-    line-height: 1; min-width: 60px;
-  }
-  .module h4 { font-size: 18px; margin-bottom: 6px; }
-  .module p { color: var(--text-dim); font-size: 15px; }
+  /* RESULTS — same pattern but distinct numbering */
+  .results { background: var(--surface-2); }
 
-  /* OFFER (now: bonuses + WhatsApp) */
-  .offer {
-    background:
-      radial-gradient(ellipse at top, rgba(212, 175, 55, 0.08), transparent 60%),
-      var(--bg);
+  /* PROCESS — 4-col phases */
+  .process { background: var(--bg); }
+  .process-grid {
+    display: grid; grid-template-columns: repeat(4, 1fr);
+    gap: 0;
+    position: relative;
   }
+  .phase {
+    padding: 40px 28px; border: 1px solid var(--line);
+    border-right: none; position: relative;
+  }
+  .phase:last-child { border-right: 1px solid var(--line); }
+  .phase-icon {
+    width: 56px; height: 56px; border-radius: 50%;
+    border: 1px solid var(--line-strong);
+    display: flex; align-items: center; justify-content: center;
+    margin-bottom: 28px; color: var(--taupe);
+    font-family: 'Clash Grotesk', sans-serif; font-size: 18px;
+  }
+  .phase-label {
+    font-size: 10px; letter-spacing: 0.16em; text-transform: uppercase;
+    color: var(--coral); font-weight: 500; margin-bottom: 14px;
+  }
+  .phase-title {
+    font-family: 'Clash Grotesk', sans-serif;
+    font-size: 22px; font-weight: 500; margin-bottom: 12px;
+    letter-spacing: -0.01em;
+  }
+  .phase-desc { font-size: 14px; color: var(--text-dim); }
+
+  /* OFFER */
+  .offer { background: var(--bg); }
   .offer-card {
-    max-width: 720px; margin: 0 auto;
-    background: linear-gradient(180deg, var(--bg-3), var(--bg));
-    border: 1px solid var(--gold);
-    border-radius: 28px; padding: 56px 48px;
-    text-align: center; position: relative;
-    box-shadow: 0 30px 80px rgba(212, 175, 55, 0.15);
+    max-width: 880px; margin: 0 auto;
+    background: var(--surface);
+    border: 1px solid var(--line-strong);
+    padding: 64px 56px;
+    position: relative;
   }
   .offer-pill {
-    position: absolute; top: -16px; left: 50%; transform: translateX(-50%);
-    background: linear-gradient(135deg, var(--gold), var(--gold-2));
-    color: #0a0e1a; padding: 8px 20px; border-radius: 999px;
-    font-size: 12px; font-weight: 800; letter-spacing: 1px;
-    white-space: nowrap;
+    position: absolute; top: -14px; left: 50%; transform: translateX(-50%);
+    background: var(--coral); color: #fff;
+    padding: 8px 20px; border-radius: 999px;
+    font-size: 10px; font-weight: 500; letter-spacing: 0.16em;
+    text-transform: uppercase; white-space: nowrap;
   }
   .offer-title {
-    font-family: 'Playfair Display', serif;
-    font-size: 32px; font-weight: 900; line-height: 1.15;
-    margin-bottom: 12px;
+    font-family: 'Clash Grotesk', sans-serif;
+    font-size: clamp(32px, 4vw, 52px); font-weight: 500; line-height: 1;
+    letter-spacing: -0.02em; margin-bottom: 16px;
   }
-  .offer-title .gold {
-    background: linear-gradient(135deg, var(--gold), var(--gold-2));
-    -webkit-background-clip: text; background-clip: text; color: transparent;
-    font-style: italic;
-    padding: 0.05em 0.12em;
-    margin: 0 -0.04em;
-    display: inline-block;
-  }
-  .offer-intro { color: var(--text-dim); margin-bottom: 32px; font-size: 16px; }
+  .offer-title .italic { font-style: italic; color: var(--taupe); }
+  .offer-intro { color: var(--text-dim); margin-bottom: 40px; font-size: 16px; }
   .offer-list {
-    list-style: none; text-align: left; margin: 0 0 36px;
+    list-style: none; margin: 0 0 40px;
+    display: grid; grid-template-columns: 1fr 1fr; gap: 0;
   }
   .offer-list li {
-    padding: 14px 0; border-bottom: 1px dashed var(--border);
+    padding: 18px 0; border-bottom: 1px solid var(--line);
     display: flex; align-items: flex-start; gap: 14px;
-    font-size: 15px;
+    font-size: 14px; line-height: 1.45;
   }
+  .offer-list li:nth-child(odd) { padding-right: 24px; }
+  .offer-list li:nth-child(even) { padding-left: 24px; border-left: 1px solid var(--line); }
   .offer-list li::before {
-    content: '✓'; color: var(--gold); font-weight: 800; font-size: 18px;
-    line-height: 1.4;
+    content: '✦'; color: var(--coral); font-size: 14px; line-height: 1.5;
+    flex-shrink: 0;
   }
   .btn-wa {
-    background: var(--whatsapp);
-    color: #ffffff;
-    padding: 18px 36px; border-radius: 999px;
-    font-weight: 800; font-size: 17px; letter-spacing: 0.3px;
+    background: var(--coral); color: #fff;
+    padding: 20px 36px; border-radius: 999px;
+    font-weight: 500; font-size: 13px; letter-spacing: 0.14em;
+    text-transform: uppercase;
     border: none; cursor: pointer;
-    box-shadow: 0 10px 40px rgba(37, 211, 102, 0.35);
-    transition: all .25s;
-    display: inline-flex; align-items: center; justify-content: center; gap: 12px;
-    width: 100%;
+    transition: transform .4s var(--ease), background .4s var(--ease);
+    display: inline-flex; align-items: center; justify-content: center; gap: 14px;
+    width: 100%; font-family: 'Satoshi', sans-serif;
   }
-  .btn-wa:hover { transform: translateY(-3px); box-shadow: 0 14px 50px rgba(37, 211, 102, 0.5); }
-  .btn-wa svg { width: 22px; height: 22px; }
-  .offer-foot { margin-top: 18px; font-size: 13px; color: var(--text-dim); }
+  .btn-wa:hover { transform: translateY(-3px); background: var(--taupe); color: var(--bg); }
+  .btn-wa svg { width: 18px; height: 18px; }
+  .offer-foot { margin-top: 18px; font-size: 12px; color: var(--text-dim); text-align: center; letter-spacing: 0.04em; }
 
   /* FAQ */
   .faq { background: var(--bg); }
-  .faq-list { max-width: 780px; margin: 0 auto; }
+  .faq-list { max-width: 900px; margin: 0 auto; }
   .faq-item {
-    border-bottom: 1px solid var(--border);
-    padding: 24px 0;
+    border-top: 1px solid var(--line);
+    padding: 28px 0;
   }
+  .faq-list .faq-item:last-child { border-bottom: 1px solid var(--line); }
   .faq-q {
     display: flex; justify-content: space-between; align-items: center;
-    cursor: pointer; font-weight: 600; font-size: 17px;
-    transition: color .2s; gap: 16px;
+    cursor: pointer; font-family: 'Clash Grotesk', sans-serif;
+    font-weight: 500; font-size: 22px; letter-spacing: -0.01em;
+    transition: color .4s var(--ease); gap: 16px;
   }
-  .faq-q:hover { color: var(--gold); }
+  .faq-q:hover { color: var(--taupe); }
   .faq-q::after {
-    content: '+'; color: var(--gold); font-size: 28px; font-weight: 300;
-    transition: transform .25s; flex-shrink: 0;
+    content: '+'; color: var(--coral); font-size: 28px; font-weight: 300;
+    transition: transform .5s var(--ease); flex-shrink: 0;
   }
   .faq-item.open .faq-q::after { transform: rotate(45deg); }
   .faq-a {
-    max-height: 0; overflow: hidden; transition: max-height .35s ease;
+    max-height: 0; overflow: hidden;
+    transition: max-height .6s var(--ease), padding .4s var(--ease);
     color: var(--text-dim); font-size: 15px;
   }
-  .faq-item.open .faq-a { max-height: 400px; padding-top: 16px; }
+  .faq-item.open .faq-a { max-height: 400px; padding-top: 18px; }
 
   /* FOOTER */
   footer {
-    background: var(--bg-2); border-top: 1px solid var(--border);
-    padding: 50px 0 30px; text-align: center;
+    background: var(--bg); border-top: 1px solid var(--line);
+    padding: 100px 0 40px;
   }
-  footer .logo { display: inline-flex; margin-bottom: 16px; }
-  footer p { color: var(--text-dim); font-size: 13px; margin-bottom: 8px; }
-  .footer-socials {
-    display: flex; gap: 12px; justify-content: center; margin: 18px 0 24px;
+  .footer-grid {
+    display: grid; grid-template-columns: 1.5fr 1fr 1fr 1fr;
+    gap: 60px; padding-bottom: 80px; border-bottom: 1px solid var(--line);
   }
+  .footer-col h5 {
+    font-size: 10px; text-transform: uppercase; letter-spacing: 0.16em;
+    color: var(--text-dim); font-weight: 500; margin-bottom: 20px;
+  }
+  .footer-col ul { list-style: none; display: flex; flex-direction: column; gap: 12px; }
+  .footer-col a {
+    font-family: 'Clash Grotesk', sans-serif; font-size: 18px; font-weight: 500;
+    color: var(--text); position: relative; display: inline-block;
+    transition: color .4s var(--ease);
+  }
+  .footer-col a:hover { color: var(--taupe); }
+  .footer-brand .logo { margin-bottom: 22px; }
+  .footer-brand p { color: var(--text-dim); font-size: 14px; max-width: 320px; }
+  .footer-bottom {
+    display: flex; justify-content: space-between; align-items: center;
+    padding-top: 40px; gap: 24px; flex-wrap: wrap;
+  }
+  .footer-bottom p { color: var(--text-dim); font-size: 12px; letter-spacing: 0.04em; }
+  .footer-socials { display: flex; gap: 10px; }
+  .social-icon {
+    width: 42px; height: 42px; border-radius: 50%;
+    border: 1px solid var(--line-strong);
+    display: inline-flex; align-items: center; justify-content: center;
+    color: var(--text); transition: all .4s var(--ease);
+  }
+  .social-icon:hover { background: var(--coral); border-color: var(--coral); color: #fff; transform: translateY(-3px); }
+  .social-icon svg { width: 16px; height: 16px; }
+  .back-top {
+    display: inline-flex; align-items: center; gap: 10px;
+    font-size: 11px; text-transform: uppercase; letter-spacing: 0.14em;
+    color: var(--text); cursor: pointer;
+    background: none; border: none; font-family: 'Satoshi', sans-serif;
+    transition: color .4s var(--ease);
+  }
+  .back-top:hover { color: var(--coral); }
+  .back-top svg { width: 14px; height: 14px; }
 
   /* FLOATING WA */
   .float-wa {
-    position: fixed; bottom: 24px; right: 24px; z-index: 99;
-    width: 60px; height: 60px; border-radius: 50%;
-    background: var(--whatsapp); color: #ffffff;
+    position: fixed; bottom: 28px; right: 28px; z-index: 50;
+    width: 56px; height: 56px; border-radius: 50%;
+    background: var(--coral); color: #fff;
     display: flex; align-items: center; justify-content: center;
-    box-shadow: 0 10px 30px rgba(37, 211, 102, 0.45);
-    transition: transform .2s;
+    transition: transform .4s var(--ease), background .4s var(--ease);
+    border: 1px solid var(--coral);
   }
-  .float-wa:hover { transform: scale(1.08); }
-  .float-wa svg { width: 30px; height: 30px; }
+  .float-wa:hover { transform: translateY(-3px) scale(1.05); background: var(--taupe); border-color: var(--taupe); color: var(--bg); }
+  .float-wa svg { width: 26px; height: 26px; }
 
   /* RESPONSIVE */
-  @media (max-width: 900px) {
-    .hero-grid { grid-template-columns: 1fr; gap: 40px; }
-    .benefits-grid { grid-template-columns: 1fr; }
-    .proof-grid { grid-template-columns: 1fr; }
-    .proof:nth-child(n) { grid-column: span 1; }
-    .hero-stats { flex-wrap: wrap; gap: 20px; }
-    section { padding: 70px 0; }
-    .offer-card { padding: 40px 24px; }
-    .offer-title { font-size: 26px; }
+  @media (max-width: 1100px) {
+    .logo-tagline { display: none; }
+    .nav-links { display: none; }
+    .menu-toggle { display: inline-flex; }
+    .hero-grid { grid-template-columns: 1fr; gap: 80px; }
+    .hero-side { min-height: 460px; }
+    .section-head { grid-template-columns: 1fr; gap: 24px; margin-bottom: 60px; }
+    .section-sub { margin-left: 0; }
+    .proof-grid { grid-template-columns: 1fr; gap: 20px; }
+    .process-grid { grid-template-columns: 1fr 1fr; }
+    .phase { border-right: 1px solid var(--line); }
+    .phase:nth-child(odd) { border-right: none; }
+    .footer-grid { grid-template-columns: 1fr 1fr; gap: 40px; }
+    .offer-list { grid-template-columns: 1fr; }
+    .offer-list li:nth-child(odd), .offer-list li:nth-child(even) { padding: 18px 0; border-left: none; }
+  }
+  @media (max-width: 700px) {
+    .container { padding: 0 24px; }
+    section.std { padding: 90px 0; }
+    .hero { padding: 130px 0 90px; }
+    .hero-stats { flex-wrap: wrap; gap: 24px; }
+    .service-row { grid-template-columns: 50px 1fr 40px; gap: 16px; padding: 28px 8px; }
+    .service-row .service-desc { display: none; }
+    .process-grid { grid-template-columns: 1fr; }
+    .phase { border-right: 1px solid var(--line); }
+    .footer-grid { grid-template-columns: 1fr; }
+    .offer-card { padding: 48px 28px; }
+    .nav-inner { padding: 18px 24px; }
+    .spin-badge { width: 120px; height: 120px; top: -20px; right: -20px; }
   }
 </style>
 </head>
 <body>
 
-<!-- WhatsApp & Instagram inline icons (used in multiple buttons) -->
+<!-- Inline icon symbols -->
 <svg width="0" height="0" style="position:absolute">
   <defs>
     <symbol id="i-wa" viewBox="0 0 24 24">
@@ -408,84 +613,159 @@
     <symbol id="i-ig" viewBox="0 0 24 24">
       <path fill="currentColor" d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
     </symbol>
+    <symbol id="i-arrow" viewBox="0 0 24 24">
+      <path fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" d="M7 17L17 7M9 7h8v8"/>
+    </symbol>
+    <symbol id="i-arrow-up" viewBox="0 0 24 24">
+      <path fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" d="M12 19V5M5 12l7-7 7 7"/>
+    </symbol>
   </defs>
 </svg>
 
-<nav>
+<!-- Custom cursor -->
+<div class="cursor-dot" id="cursor-dot"></div>
+<div class="cursor-ring" id="cursor-ring"></div>
+
+<!-- NAV -->
+<nav id="nav">
   <div class="nav-inner">
-    <a href="#" class="logo">
-      <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg" aria-label="GPMM">
-        <circle cx="50" cy="50" r="46" stroke="#ffffff" stroke-width="3"/>
-        <text x="50" y="58" text-anchor="middle" font-family="Inter, sans-serif" font-size="26" font-weight="900" fill="#ffffff" letter-spacing="0.5">GPMM</text>
-      </svg>
-      <span class="logo-tagline">Gestión y Posicionamiento<br>de Marcas <span class="amp">&amp;</span> Marketing</span>
+    <a href="#" class="logo" data-hov>
+      <span class="logo-mark clash">GPMM<span class="dot">.</span></span>
+      <span class="logo-tagline">Gestión y Posicionamiento<br>de Marcas &amp; Marketing</span>
     </a>
+    <ul class="nav-links">
+      <li><a href="#trabajo" data-hov>Trabajo</a></li>
+      <li><a href="#metodo" data-hov>Método</a></li>
+      <li><a href="#proceso" data-hov>Proceso</a></li>
+      <li><a href="#faq" data-hov>FAQ</a></li>
+    </ul>
+    <a href="#oferta" class="pill-btn coral magnetic" data-hov>
+      Hablemos
+      <svg class="arr"><use href="#i-arrow"/></svg>
+    </a>
+    <button class="menu-toggle" id="menuToggle" aria-label="Menú" data-hov><span></span></button>
   </div>
 </nav>
+
+<div class="mobile-menu" id="mobileMenu">
+  <a href="#trabajo">Trabajo</a>
+  <a href="#metodo">Método</a>
+  <a href="#proceso">Proceso</a>
+  <a href="#faq">FAQ</a>
+  <a href="#oferta">Hablemos</a>
+</div>
 
 <!-- HERO -->
 <section class="hero">
   <div class="container">
     <div class="hero-grid">
       <div>
-        <div class="badge">Lo importante es vender</div>
-        <h1>Eleva tu marketing digital al <span class="gold">siguiente nivel</span> con estrategias reales.</h1>
-        <p class="hero-sub">
-          Ayudamos empresas a elevar su facturamiento con estrategias de ventas.
+        <div class="eyebrow">Multidisciplinario · 2026</div>
+        <h1 class="display">
+          <span class="reveal-line"><span>Lo importante</span></span>
+          <span class="reveal-line"><span>es <span class="italic">vender</span>—</span></span>
+          <span class="reveal-line"><span>todo lo demás</span></span>
+          <span class="reveal-line"><span>es <span class="coral">ruido.</span></span></span>
+        </h1>
+        <p class="hero-sub fade-up">
+          Ayudamos a empresas a elevar su facturación con estrategias de ventas reales, funnels validados y pensamiento fuera de la caja.
         </p>
-        <div class="hero-stats">
-          <div class="stat"><strong>+350K</strong><span>Facturados a nuestros partners</span></div>
+        <div class="hero-stats fade-up">
+          <div class="stat"><strong>+350K</strong><span>Facturados a partners</span></div>
           <div class="stat"><strong>+4 años</strong><span>De experiencia</span></div>
           <div class="stat"><strong>4.9/5</strong><span>Calificación</span></div>
         </div>
       </div>
-      <div class="ceo-card">
-        <div class="ceo-image">
-          <img src="ender.jpg" alt="Ender M Rivero" onerror="this.outerHTML='<div class=\'initials\'>EM</div>'" />
-        </div>
-        <div class="ceo-info">
-          <div>
-            <div class="ceo-name">Ender M Rivero</div>
-            <div class="ceo-role">CEO de GPMM</div>
+      <div class="hero-side">
+        <div class="portrait" data-hov>
+          <img src="ender.jpg" alt="Ender M Rivero" onerror="this.style.display='none'; this.parentNode.style.background='var(--surface)'; this.parentNode.insertAdjacentHTML('beforeend','<div style=&quot;position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-family:Clash Grotesk;font-size:120px;font-weight:600;color:var(--taupe);letter-spacing:-0.04em&quot;>EM</div>')" />
+          <div class="portrait-label">
+            <div>
+              <strong>Ender M Rivero</strong>
+              <span>CEO · GPMM</span>
+            </div>
           </div>
+        </div>
+        <div class="spin-badge">
+          <svg viewBox="0 0 200 200">
+            <defs>
+              <path id="circle" d="M 100, 100 m -75, 0 a 75,75 0 1,1 150,0 a 75,75 0 1,1 -150,0"/>
+            </defs>
+            <text>
+              <textPath href="#circle">OPEN TO WORK · FREELANCE · GPMM ·&nbsp;</textPath>
+            </text>
+          </svg>
+          <a href="#oferta" class="center" data-hov aria-label="Empezar">
+            <svg viewBox="0 0 24 24"><use href="#i-arrow"/></svg>
+          </a>
         </div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- 5 SOCIAL PROOFS -->
-<section class="proofs">
+<!-- MARQUEE -->
+<div class="marquee">
+  <div class="marquee-track">
+    <span>Estrategia <span class="star">✦</span></span>
+    <span class="out">Ventas</span>
+    <span>Funnels <span class="star">✦</span></span>
+    <span class="out">Tráfico</span>
+    <span>Copy <span class="star">✦</span></span>
+    <span class="out">Escalado</span>
+    <span>Resultados <span class="star">✦</span></span>
+    <!-- duplicate for seamless loop -->
+    <span>Estrategia <span class="star">✦</span></span>
+    <span class="out">Ventas</span>
+    <span>Funnels <span class="star">✦</span></span>
+    <span class="out">Tráfico</span>
+    <span>Copy <span class="star">✦</span></span>
+    <span class="out">Escalado</span>
+    <span>Resultados <span class="star">✦</span></span>
+  </div>
+</div>
+
+<!-- SOCIAL PROOFS -->
+<section class="std proofs" id="trabajo">
   <div class="container">
-    <div class="section-tag">Pruebas sociales</div>
-    <h2 class="section-title">Empresas a las que <span class="gold">ya ayudamos</span> a facturar</h2>
-    <p class="section-sub">Resultados reales de partners que aplicaron nuestras estrategias de ventas.</p>
+    <div class="section-head">
+      <div>
+        <div class="eyebrow coral">Pruebas Sociales</div>
+        <h2 class="section-title">Empresas a las que <span class="italic">ya ayudamos</span> a facturar.</h2>
+      </div>
+      <p class="section-sub">Resultados reales de partners que aplicaron nuestras estrategias. Cero teoría, todo medible.</p>
+    </div>
     <div class="proof-grid">
-      <div class="proof">
+      <div class="proof" data-hov>
+        <div class="proof-num">01</div>
         <div class="stars">★★★★★</div>
         <div class="proof-result">+$16.000 USD en 60 días</div>
         <p>"Llegamos a GPMM estancados en facturación. En dos meses estructuraron nuestro proceso de ventas y los resultados fueron inmediatos."</p>
         <div class="p-author"><div class="p-avatar">CM</div><div><div class="p-name">Camila Méndez</div><div class="p-role">CEO · E-commerce de moda</div></div></div>
       </div>
-      <div class="proof">
+      <div class="proof" data-hov>
+        <div class="proof-num">02</div>
         <div class="stars">★★★★★</div>
         <div class="proof-result">3x ROI en ads</div>
         <p>"Nuestra inversión publicitaria triplicó su retorno. Ender entiende el negocio detrás de los números, no sólo las métricas."</p>
         <div class="p-author"><div class="p-avatar">JR</div><div><div class="p-name">Javier Restrepo</div><div class="p-role">Director · Agencia inmobiliaria</div></div></div>
       </div>
-      <div class="proof">
+      <div class="proof" data-hov>
+        <div class="proof-num">03</div>
         <div class="stars">★★★★★</div>
         <div class="proof-result">+$24.000 USD mensuales</div>
         <p>"Pasamos de vender por inercia a tener un sistema previsible. Hoy sabemos exactamente cuánto invertir para cuánto facturar."</p>
         <div class="p-author"><div class="p-avatar">LT</div><div><div class="p-name">Lucía Torres</div><div class="p-role">Fundadora · Clínica estética</div></div></div>
       </div>
-      <div class="proof">
+      <div class="proof" data-hov>
+        <div class="proof-num">04</div>
         <div class="stars">★★★★★</div>
         <div class="proof-result">De 10 a 80 ventas/mes</div>
-        <p>"Llevábamos un año intentando escalar sin éxito. GPMM identificó el cuello de botella en una semana y lo resolvió. Hoy facturamos 8x más."</p>
+        <p>"Llevábamos un año intentando escalar sin éxito. GPMM identificó el cuello de botella en una semana. Hoy facturamos 8x más."</p>
         <div class="p-author"><div class="p-avatar">AS</div><div><div class="p-name">Andrés Salazar</div><div class="p-role">CEO · SaaS B2B</div></div></div>
       </div>
-      <div class="proof">
+      <div class="proof" data-hov>
+        <div class="proof-num">05</div>
         <div class="stars">★★★★★</div>
         <div class="proof-result">+$50.000 USD en lanzamiento</div>
         <p>"El lanzamiento que estructuramos con GPMM fue el más rentable de nuestra historia. Estrategia, copy y embudo, todo en un sólo lugar."</p>
@@ -495,89 +775,168 @@
   </div>
 </section>
 
-<!-- BENEFITS (what you need to make more money) -->
-<section class="benefits">
+<!-- SERVICES (formerly benefits) -->
+<section class="std services" id="metodo">
   <div class="container">
-    <div class="section-tag">El método GPMM</div>
-    <h2 class="section-title">Todo lo que necesitas para <span class="gold">generar más dinero</span></h2>
-    <p class="section-sub">Una estrategia clara, un funnel de ventas validado y pensamientos fuera de la caja. Eso es lo que separa a las empresas que crecen de las que se estancan.</p>
-    <div class="benefits-grid">
-      <div class="benefit">
-        <div class="benefit-icon">◆</div>
-        <h3>Estrategia comercial</h3>
-        <p>Diseñamos el plan de ventas adaptado a tu mercado, producto y momento del negocio. Sin plantillas genéricas.</p>
+    <div class="section-head">
+      <div>
+        <div class="eyebrow coral">El método</div>
+        <h2 class="section-title">Todo lo que necesitas para <span class="italic">generar más dinero.</span></h2>
       </div>
-      <div class="benefit">
-        <div class="benefit-icon">▲</div>
-        <h3>Funnels validados</h3>
-        <p>Construimos embudos de venta que ya probamos en otros negocios y que sabemos que convierten.</p>
+      <p class="section-sub">Una estrategia clara, un funnel validado y pensamiento fuera de la caja. Lo que separa a las empresas que crecen de las que se estancan.</p>
+    </div>
+    <div class="services-list">
+      <div class="service-row" data-hov>
+        <div class="service-num clash">01</div>
+        <div class="service-title">Estrategia comercial</div>
+        <div class="service-desc">Diseñamos el plan de ventas adaptado a tu mercado, producto y momento del negocio. Sin plantillas genéricas.</div>
+        <div class="service-arrow"><svg width="20" height="20"><use href="#i-arrow"/></svg></div>
       </div>
-      <div class="benefit">
-        <div class="benefit-icon">●</div>
-        <h3>Tráfico que vende</h3>
-        <p>Gestionamos campañas en Meta, Google y TikTok Ads enfocadas en facturación, no en likes.</p>
+      <div class="service-row" data-hov>
+        <div class="service-num clash">02</div>
+        <div class="service-title">Funnels validados</div>
+        <div class="service-desc">Construimos embudos de venta probados en otros negocios y que sabemos que convierten en tu industria.</div>
+        <div class="service-arrow"><svg width="20" height="20"><use href="#i-arrow"/></svg></div>
       </div>
-      <div class="benefit">
-        <div class="benefit-icon">★</div>
-        <h3>Copy y creativos</h3>
-        <p>Mensajes y anuncios que conectan con la verdadera razón por la que tu cliente compra.</p>
+      <div class="service-row" data-hov>
+        <div class="service-num clash">03</div>
+        <div class="service-title">Tráfico que vende</div>
+        <div class="service-desc">Gestionamos campañas en Meta, Google y TikTok Ads enfocadas en facturación, no en likes.</div>
+        <div class="service-arrow"><svg width="20" height="20"><use href="#i-arrow"/></svg></div>
       </div>
-      <div class="benefit">
-        <div class="benefit-icon">◇</div>
-        <h3>Pensamiento fuera de la caja</h3>
-        <p>Encontramos el ángulo que tu competencia no ve. Eso es lo que hace explotar las ventas.</p>
+      <div class="service-row" data-hov>
+        <div class="service-num clash">04</div>
+        <div class="service-title">Copy y creativos</div>
+        <div class="service-desc">Mensajes y anuncios que conectan con la verdadera razón por la que tu cliente compra.</div>
+        <div class="service-arrow"><svg width="20" height="20"><use href="#i-arrow"/></svg></div>
       </div>
-      <div class="benefit">
-        <div class="benefit-icon">✦</div>
-        <h3>Escalado predecible</h3>
-        <p>Sistemas, métricas y procesos para que tu facturación deje de depender de la suerte.</p>
+      <div class="service-row" data-hov>
+        <div class="service-num clash">05</div>
+        <div class="service-title">Pensamiento fuera de la caja</div>
+        <div class="service-desc">Encontramos el ángulo que tu competencia no ve. Eso es lo que hace explotar las ventas.</div>
+        <div class="service-arrow"><svg width="20" height="20"><use href="#i-arrow"/></svg></div>
+      </div>
+      <div class="service-row" data-hov>
+        <div class="service-num clash">06</div>
+        <div class="service-title">Escalado predecible</div>
+        <div class="service-desc">Sistemas, métricas y procesos para que tu facturación deje de depender de la suerte.</div>
+        <div class="service-arrow"><svg width="20" height="20"><use href="#i-arrow"/></svg></div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- WHAT COMPANIES GAIN -->
-<section class="modules" id="contenido">
+<!-- RESULTS (formerly modules) -->
+<section class="std results">
   <div class="container">
-    <div class="section-tag">Lo que ganan nuestros partners</div>
-    <h2 class="section-title">Resultados que vas a <span class="gold">obtener</span></h2>
-    <p class="section-sub">Esto es lo que recibe una empresa cuando trabaja con GPMM. No teoría, sino transformación medible.</p>
-    <div class="module-list">
-      <div class="module"><div class="module-num">01</div><div><h4>Aumento real en facturación</h4><p>Llevamos tu negocio de un punto A a un punto B con números claros, no promesas vagas.</p></div></div>
-      <div class="module"><div class="module-num">02</div><div><h4>Procesos de venta predecibles</h4><p>Dejas de depender del boca a boca o de la suerte. Tienes un sistema que puedes proyectar mes a mes.</p></div></div>
-      <div class="module"><div class="module-num">03</div><div><h4>Inversión publicitaria rentable</h4><p>Cada peso invertido en ads vuelve multiplicado. Optimizamos hasta el último detalle del embudo.</p></div></div>
-      <div class="module"><div class="module-num">04</div><div><h4>Posicionamiento de autoridad</h4><p>Tu marca se convierte en la primera opción del mercado, no en una más entre muchas.</p></div></div>
-      <div class="module"><div class="module-num">05</div><div><h4>Equipo y procesos sólidos</h4><p>Te dejamos estructura para que el crecimiento no se rompa cuando tú no estés mirando.</p></div></div>
-      <div class="module"><div class="module-num">06</div><div><h4>Tiempo de vuelta para ti</h4><p>Recuperas las horas que hoy gastas apagando incendios y vuelves a enfocarte en lo estratégico.</p></div></div>
-      <div class="module"><div class="module-num">07</div><div><h4>Tranquilidad financiera</h4><p>Saber que tu empresa factura todos los meses sin ti detrás empujando. Eso no tiene precio.</p></div></div>
+    <div class="section-head">
+      <div>
+        <div class="eyebrow coral">Lo que ganas</div>
+        <h2 class="section-title">Resultados que vas a <span class="italic">obtener.</span></h2>
+      </div>
+      <p class="section-sub">Esto es lo que recibe una empresa cuando trabaja con GPMM. No teoría, sino transformación medible.</p>
+    </div>
+    <div class="services-list">
+      <div class="service-row" data-hov>
+        <div class="service-num clash">01</div>
+        <div class="service-title">Aumento real en facturación</div>
+        <div class="service-desc">Llevamos tu negocio de un punto A a un punto B con números claros, no promesas vagas.</div>
+        <div class="service-arrow"><svg width="20" height="20"><use href="#i-arrow"/></svg></div>
+      </div>
+      <div class="service-row" data-hov>
+        <div class="service-num clash">02</div>
+        <div class="service-title">Procesos de venta predecibles</div>
+        <div class="service-desc">Dejas de depender del boca a boca o de la suerte. Tienes un sistema que puedes proyectar mes a mes.</div>
+        <div class="service-arrow"><svg width="20" height="20"><use href="#i-arrow"/></svg></div>
+      </div>
+      <div class="service-row" data-hov>
+        <div class="service-num clash">03</div>
+        <div class="service-title">Inversión publicitaria rentable</div>
+        <div class="service-desc">Cada peso invertido en ads vuelve multiplicado. Optimizamos hasta el último detalle del embudo.</div>
+        <div class="service-arrow"><svg width="20" height="20"><use href="#i-arrow"/></svg></div>
+      </div>
+      <div class="service-row" data-hov>
+        <div class="service-num clash">04</div>
+        <div class="service-title">Posicionamiento de autoridad</div>
+        <div class="service-desc">Tu marca se convierte en la primera opción del mercado, no en una más entre muchas.</div>
+        <div class="service-arrow"><svg width="20" height="20"><use href="#i-arrow"/></svg></div>
+      </div>
+      <div class="service-row" data-hov>
+        <div class="service-num clash">05</div>
+        <div class="service-title">Tranquilidad financiera</div>
+        <div class="service-desc">Saber que tu empresa factura todos los meses sin ti detrás empujando. Eso no tiene precio.</div>
+        <div class="service-arrow"><svg width="20" height="20"><use href="#i-arrow"/></svg></div>
+      </div>
     </div>
   </div>
 </section>
 
-<!-- OFFER (bonuses + WhatsApp only) -->
-<section class="offer" id="oferta">
+<!-- PROCESS -->
+<section class="std process" id="proceso">
   <div class="container">
-    <div class="section-tag">Empieza con nosotros</div>
-    <h2 class="section-title">Lo que <span class="gold">incluye</span> trabajar con GPMM</h2>
-    <p class="section-sub">Cuando contratas nuestros servicios, no recibes una asesoría más. Recibes esto.</p>
+    <div class="section-head">
+      <div>
+        <div class="eyebrow coral">Cómo trabajamos</div>
+        <h2 class="section-title">El proceso <span class="italic">GPMM.</span></h2>
+      </div>
+      <p class="section-sub">Cuatro fases para llevar tu negocio del estancamiento a un sistema de ventas predecible.</p>
+    </div>
+    <div class="process-grid">
+      <div class="phase" data-hov>
+        <div class="phase-icon">◆</div>
+        <div class="phase-label">Fase 01</div>
+        <div class="phase-title">Diagnóstico</div>
+        <div class="phase-desc">Auditamos tu negocio, ventas y embudo actual para identificar los cuellos de botella reales.</div>
+      </div>
+      <div class="phase" data-hov>
+        <div class="phase-icon">▲</div>
+        <div class="phase-label">Fase 02</div>
+        <div class="phase-title">Estrategia</div>
+        <div class="phase-desc">Diseñamos el plan de crecimiento personalizado a tu mercado, meta y momento.</div>
+      </div>
+      <div class="phase" data-hov>
+        <div class="phase-icon">●</div>
+        <div class="phase-label">Fase 03</div>
+        <div class="phase-title">Ejecución</div>
+        <div class="phase-desc">Implementamos funnels, campañas, copy y creativos. Pasamos del plan a los resultados.</div>
+      </div>
+      <div class="phase" data-hov>
+        <div class="phase-icon">✦</div>
+        <div class="phase-label">Fase 04</div>
+        <div class="phase-title">Escalado</div>
+        <div class="phase-desc">Optimizamos cada semana para que la facturación crezca de forma sostenida y predecible.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- OFFER -->
+<section class="std offer" id="oferta">
+  <div class="container">
+    <div class="section-head">
+      <div>
+        <div class="eyebrow coral">Empieza con nosotros</div>
+        <h2 class="section-title">Lo que <span class="italic">incluye</span> trabajar con GPMM.</h2>
+      </div>
+      <p class="section-sub">Cuando contratas nuestros servicios, no recibes una asesoría más. Recibes todo el sistema.</p>
+    </div>
     <div class="offer-card">
-      <div class="offer-pill">★ ACOMPAÑAMIENTO COMPLETO</div>
-      <div class="offer-title">Plan integral <span class="gold">GPMM</span></div>
+      <div class="offer-pill">✦ Acompañamiento completo</div>
+      <div class="offer-title">Plan integral <span class="italic">GPMM</span></div>
       <p class="offer-intro">Diseñado para empresas que quieren resultados, no excusas.</p>
 
       <ul class="offer-list">
-        <li>Diagnóstico estratégico inicial 100% gratuito de tu negocio</li>
-        <li>Plan de crecimiento personalizado según tu mercado y meta</li>
-        <li>Estructuración del funnel de ventas completo (de cero o auditado)</li>
-        <li>Gestión y optimización de campañas en Meta, Google y TikTok Ads</li>
-        <li>Copywriting y creativos diseñados para vender, no para gustar</li>
+        <li>Diagnóstico estratégico inicial 100% gratuito</li>
+        <li>Plan de crecimiento personalizado según tu mercado</li>
+        <li>Estructuración del funnel de ventas completo</li>
+        <li>Gestión y optimización de campañas en Meta, Google y TikTok</li>
+        <li>Copywriting y creativos diseñados para vender</li>
         <li>Reportes semanales con métricas claras y siguientes pasos</li>
         <li>Reuniones estratégicas mensuales con Ender M Rivero</li>
         <li>Soporte dedicado por WhatsApp todos los días hábiles</li>
-        <li>Acceso a la red de partners y proveedores recomendados</li>
       </ul>
 
-      <a href="https://wa.me/?text=Hola%20GPMM%2C%20quiero%20saber%20m%C3%A1s%20sobre%20sus%20servicios" target="_blank" rel="noopener" class="btn-wa">
+      <a href="https://wa.me/?text=Hola%20GPMM%2C%20quiero%20saber%20m%C3%A1s%20sobre%20sus%20servicios" target="_blank" rel="noopener" class="btn-wa magnetic" data-hov>
         <svg><use href="#i-wa"/></svg>
         Hablar por WhatsApp
       </a>
@@ -587,29 +946,34 @@
 </section>
 
 <!-- FAQ -->
-<section class="faq">
+<section class="std faq" id="faq">
   <div class="container">
-    <div class="section-tag">Dudas frecuentes</div>
-    <h2 class="section-title">Preguntas <span class="gold">comunes</span></h2>
+    <div class="section-head">
+      <div>
+        <div class="eyebrow coral">Dudas frecuentes</div>
+        <h2 class="section-title">Preguntas <span class="italic">comunes.</span></h2>
+      </div>
+      <p class="section-sub">Las dudas que nos hacen casi todas las empresas antes de empezar.</p>
+    </div>
     <div class="faq-list">
       <div class="faq-item">
-        <div class="faq-q">¿Para qué tipo de empresas trabajan?</div>
+        <div class="faq-q" data-hov>¿Para qué tipo de empresas trabajan?</div>
         <div class="faq-a">Trabajamos con empresas que ya tienen un producto o servicio validado y quieren escalar su facturación con un sistema de ventas claro. E-commerce, infoproductos, servicios, SaaS y negocios locales con potencial de crecer en digital.</div>
       </div>
       <div class="faq-item">
-        <div class="faq-q">¿Cómo es el primer paso?</div>
+        <div class="faq-q" data-hov>¿Cómo es el primer paso?</div>
         <div class="faq-a">Agendas una llamada gratuita por WhatsApp donde analizamos tu negocio, identificamos cuellos de botella y te decimos honestamente si podemos ayudarte. Sin compromiso.</div>
       </div>
       <div class="faq-item">
-        <div class="faq-q">¿Cuánto tiempo lleva ver resultados?</div>
+        <div class="faq-q" data-hov>¿Cuánto tiempo lleva ver resultados?</div>
         <div class="faq-a">Depende del estado actual del negocio, pero la mayoría de nuestros partners ven mejoras claras en los primeros 30-60 días. Casos avanzados, como reestructuración completa, pueden tomar 90 días para resultados sólidos.</div>
       </div>
       <div class="faq-item">
-        <div class="faq-q">¿Trabajan con cualquier presupuesto?</div>
+        <div class="faq-q" data-hov>¿Trabajan con cualquier presupuesto?</div>
         <div class="faq-a">No. Necesitamos que el negocio tenga capacidad de inversión mínima para que la estrategia funcione. Lo conversamos en la llamada inicial sin filtros.</div>
       </div>
       <div class="faq-item">
-        <div class="faq-q">¿Por qué GPMM y no una agencia tradicional?</div>
+        <div class="faq-q" data-hov>¿Por qué GPMM y no una agencia tradicional?</div>
         <div class="faq-a">Porque no vendemos servicios sueltos: vendemos resultados. Acompañamos el negocio de punta a punta, con estrategia y ejecución, y nuestro éxito está atado al tuyo.</div>
       </div>
     </div>
@@ -619,22 +983,121 @@
 <!-- FOOTER -->
 <footer id="contacto">
   <div class="container">
-    <a href="#" class="logo">
-      <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg" aria-label="GPMM">
-        <circle cx="50" cy="50" r="46" stroke="#ffffff" stroke-width="3"/>
-        <text x="50" y="58" text-anchor="middle" font-family="Inter, sans-serif" font-size="26" font-weight="900" fill="#ffffff" letter-spacing="0.5">GPMM</text>
-      </svg>
-      <span class="logo-tagline">Gestión y Posicionamiento<br>de Marcas <span class="amp">&amp;</span> Marketing</span>
-    </a>
-    <p style="margin-top: 18px;">© 2026 GPMM. Todos los derechos reservados.</p>
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <a href="#" class="logo">
+          <span class="logo-mark clash">GPMM<span class="dot">.</span></span>
+        </a>
+        <p>Gestión y Posicionamiento de Marcas &amp; Marketing. Estrategias de ventas reales para empresas que quieren facturar más.</p>
+      </div>
+      <div class="footer-col">
+        <h5>Navegar</h5>
+        <ul>
+          <li><a href="#trabajo" data-hov>Trabajo</a></li>
+          <li><a href="#metodo" data-hov>Método</a></li>
+          <li><a href="#proceso" data-hov>Proceso</a></li>
+          <li><a href="#faq" data-hov>FAQ</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h5>Conectar</h5>
+        <ul>
+          <li><a href="https://wa.me/?text=Hola%20GPMM" target="_blank" rel="noopener" data-hov>WhatsApp</a></li>
+          <li><a href="#" data-hov>Instagram</a></li>
+          <li><a href="#" data-hov>LinkedIn</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h5>Contacto</h5>
+        <ul>
+          <li><a href="mailto:hola@gpmm.com" data-hov>hola@gpmm.com</a></li>
+          <li><a href="#oferta" data-hov>Agenda una llamada</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>© 2026 GPMM · Todos los derechos reservados</p>
+      <div class="footer-socials">
+        <a href="https://wa.me/?text=Hola%20GPMM" target="_blank" rel="noopener" class="social-icon magnetic" data-hov aria-label="WhatsApp"><svg><use href="#i-wa"/></svg></a>
+        <a href="#" class="social-icon magnetic" data-hov aria-label="Instagram"><svg><use href="#i-ig"/></svg></a>
+      </div>
+      <button class="back-top" id="backTop" data-hov>
+        Back to top
+        <svg><use href="#i-arrow-up"/></svg>
+      </button>
+    </div>
   </div>
 </footer>
 
-<a href="https://wa.me/?text=Hola%20GPMM" target="_blank" rel="noopener" class="float-wa" aria-label="WhatsApp">
+<a href="https://wa.me/?text=Hola%20GPMM" target="_blank" rel="noopener" class="float-wa magnetic" data-hov aria-label="WhatsApp">
   <svg><use href="#i-wa"/></svg>
 </a>
 
 <script>
+  // Custom cursor
+  const dot = document.getElementById('cursor-dot');
+  const ring = document.getElementById('cursor-ring');
+  let mx = 0, my = 0, rx = 0, ry = 0;
+  window.addEventListener('pointermove', e => {
+    mx = e.clientX; my = e.clientY;
+    dot.style.transform = `translate(${mx}px, ${my}px) translate(-50%, -50%)`;
+  });
+  function tickRing() {
+    rx += (mx - rx) * 0.18;
+    ry += (my - ry) * 0.18;
+    ring.style.transform = `translate(${rx}px, ${ry}px) translate(-50%, -50%)`;
+    requestAnimationFrame(tickRing);
+  }
+  tickRing();
+  document.querySelectorAll('[data-hov]').forEach(el => {
+    el.addEventListener('mouseenter', () => ring.classList.add('hov'));
+    el.addEventListener('mouseleave', () => ring.classList.remove('hov'));
+  });
+
+  // Magnetic buttons
+  document.querySelectorAll('.magnetic').forEach(el => {
+    el.addEventListener('mousemove', e => {
+      const rect = el.getBoundingClientRect();
+      const x = e.clientX - rect.left - rect.width / 2;
+      const y = e.clientY - rect.top - rect.height / 2;
+      el.style.transform = `translate(${x * 0.2}px, ${y * 0.2}px)`;
+    });
+    el.addEventListener('mouseleave', () => {
+      el.style.transform = '';
+    });
+  });
+
+  // Nav scrolled
+  const nav = document.getElementById('nav');
+  window.addEventListener('scroll', () => {
+    nav.classList.toggle('scrolled', window.scrollY > 20);
+  });
+
+  // Mobile menu
+  const toggle = document.getElementById('menuToggle');
+  const menu = document.getElementById('mobileMenu');
+  toggle?.addEventListener('click', () => menu.classList.toggle('open'));
+  menu.querySelectorAll('a').forEach(a => a.addEventListener('click', () => menu.classList.remove('open')));
+
+  // Back to top
+  document.getElementById('backTop').addEventListener('click', () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+
+  // Reveal on scroll
+  const io = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.classList.add('in');
+        io.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.15 });
+  document.querySelectorAll('.reveal-line, .fade-up').forEach((el, i) => {
+    el.style.transitionDelay = `${(i % 4) * 0.08 + 0.05}s`;
+    io.observe(el);
+  });
+
   // FAQ accordion
   document.querySelectorAll('.faq-item').forEach(item => {
     item.querySelector('.faq-q').addEventListener('click', () => {
