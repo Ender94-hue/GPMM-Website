@@ -1,0 +1,781 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>WERKHUIS · Heavy House, Tended Garden · Home & DIY</title>
+<meta name="description" content="A workshop store for the long-life home. Dutch tulip bulbs, forged garden tools, and hand-thrown stoneware shipped from Amsterdam." />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --concrete: #f2f2f2;
+    --ink: #0a0a0a;
+    --grey: #525252;
+    --line: rgba(10, 10, 10, 0.12);
+    --red: #dc2626;
+    --ease: cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: 'Space Grotesk', system-ui, sans-serif;
+    background: var(--concrete);
+    color: var(--ink);
+    line-height: 1.55;
+    letter-spacing: 0.01em;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+  }
+  img { display: block; max-width: 100%; }
+  a { color: inherit; text-decoration: none; }
+  ::selection { background: var(--ink); color: var(--concrete); }
+  .display { font-family: 'Anton', sans-serif; font-weight: 400; letter-spacing: -0.04em; line-height: 0.85; text-transform: uppercase; }
+  .mono {
+    font-family: 'Space Grotesk', monospace;
+    font-size: 11px; font-weight: 500;
+    letter-spacing: 0.16em; text-transform: uppercase;
+  }
+  .container { max-width: 1480px; margin: 0 auto; padding: 0 40px; }
+
+  /* Grain overlay */
+  body::after {
+    content: ''; position: fixed; inset: 0; pointer-events: none; z-index: 300;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='400' height='400'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+    opacity: 0.04;
+    mix-blend-mode: multiply;
+  }
+
+  /* Inline link with hover line-through */
+  .ul-link {
+    display: inline-flex; align-items: center; gap: 10px;
+    border-bottom: 2px solid var(--ink); padding-bottom: 4px;
+    font-size: 12px; font-weight: 700;
+    letter-spacing: 0.2em; text-transform: uppercase;
+    transition: gap .5s var(--ease);
+  }
+  .ul-link:hover { gap: 18px; text-decoration: line-through; text-decoration-thickness: 2px; }
+
+  /* Header */
+  .nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 40;
+    mix-blend-mode: difference;
+    padding: 28px 40px;
+    display: flex; justify-content: space-between; align-items: start;
+    pointer-events: none;
+  }
+  .nav > * { pointer-events: auto; }
+  .nav-brand-wrap { display: flex; flex-direction: column; gap: 6px; }
+  .nav-brand {
+    font-family: 'Anton', sans-serif; font-weight: 400;
+    font-size: clamp(28px, 2.6vw, 40px); letter-spacing: -0.04em;
+    color: #fff; line-height: 0.9; text-transform: uppercase;
+  }
+  .nav-sub {
+    font-size: 10px; font-weight: 500;
+    letter-spacing: 0.3em; text-transform: uppercase;
+    color: rgba(255,255,255,0.6);
+  }
+  .nav-links {
+    display: flex; flex-direction: column; gap: 8px;
+    list-style: none; margin-right: 80px;
+    text-align: right;
+  }
+  .nav-links a {
+    font-size: 12px; font-weight: 700;
+    letter-spacing: 0.2em; text-transform: uppercase;
+    color: #fff;
+    transition: opacity .3s var(--ease);
+  }
+  .nav-links a:hover { text-decoration: line-through; text-decoration-thickness: 2px; }
+  .nav-cart {
+    position: fixed; top: 24px; right: 24px; z-index: 50;
+    width: 64px; height: 64px; border-radius: 50%;
+    background: #fff; color: var(--ink);
+    display: flex; align-items: center; justify-content: center;
+    box-shadow: 0 18px 40px rgba(0,0,0,0.1), 0 4px 8px rgba(0,0,0,0.08);
+    transition: transform .4s var(--ease);
+  }
+  .nav-cart:hover { transform: scale(1.1); }
+  .nav-cart svg { width: 22px; height: 22px; }
+  .nav-cart-badge {
+    position: absolute; top: -4px; right: -4px;
+    min-width: 22px; height: 22px; padding: 0 6px;
+    background: var(--red); color: #fff;
+    border-radius: 999px;
+    display: inline-flex; align-items: center; justify-content: center;
+    font-size: 10px; font-weight: 700;
+    letter-spacing: 0.04em;
+  }
+
+  /* Hero */
+  .hero {
+    position: relative;
+    min-height: 100vh;
+    padding: 200px 40px 80px;
+    overflow: hidden;
+  }
+  .hero-left {
+    width: 50%; position: relative; z-index: 2;
+    display: flex; flex-direction: column; justify-content: flex-end;
+    min-height: 60vh;
+  }
+  .hero-h1 {
+    font-family: 'Anton', sans-serif; font-weight: 400;
+    font-size: clamp(60px, 12vw, 200px);
+    line-height: 0.82; letter-spacing: -0.05em;
+    text-transform: uppercase;
+    margin-bottom: 28px;
+  }
+  .hero-sub {
+    max-width: 320px;
+    font-size: 15px; line-height: 1.6;
+    color: var(--grey); margin-bottom: 24px;
+    letter-spacing: 0.005em;
+  }
+  .hero-right {
+    position: absolute; right: -8%; top: 100px; bottom: 0;
+    width: 62%; z-index: 1;
+    overflow: hidden;
+  }
+  .hero-right img {
+    width: 100%; height: 100%; object-fit: cover;
+    object-position: left center;
+    filter: grayscale(100%);
+    transition: filter .7s var(--ease), transform 1.4s var(--ease);
+  }
+  .hero-right:hover img { filter: grayscale(0); transform: scale(1.05); }
+  .hero-collection {
+    position: absolute; left: 22px; bottom: 32px;
+    transform: rotate(-90deg) translateX(-100%);
+    transform-origin: left top;
+    color: rgba(255,255,255,0.85);
+    mix-blend-mode: difference;
+    white-space: nowrap;
+    z-index: 3;
+  }
+  .hero-badge {
+    position: absolute; left: 24px; top: 24px;
+    background: #fff; color: var(--ink);
+    padding: 4px 8px;
+    font-size: 10px; font-weight: 700;
+    letter-spacing: 0.2em; text-transform: uppercase;
+    z-index: 3;
+  }
+
+  /* Section header pattern */
+  .section-head {
+    display: flex; justify-content: space-between; align-items: end;
+    gap: 24px; margin-bottom: 56px;
+  }
+  .section-head h2 {
+    font-family: 'Anton', sans-serif; font-weight: 400;
+    font-size: clamp(48px, 7vw, 112px);
+    line-height: 0.85; letter-spacing: -0.05em;
+    text-transform: uppercase;
+  }
+  .section-head h2 em { font-style: italic; font-weight: 400; }
+  .section-head .meta {
+    color: var(--grey); max-width: 280px;
+    font-size: 13px; line-height: 1.55;
+  }
+
+  /* Horizontal Strip */
+  .strip { padding: 120px 0 100px; border-top: 1px solid var(--line); }
+  .strip-track {
+    display: flex; gap: 24px;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scrollbar-width: none;
+    padding: 4px 40px 24px;
+    margin: 0 -40px;
+  }
+  .strip-track::-webkit-scrollbar { display: none; }
+  .strip-card {
+    flex-shrink: 0;
+    width: clamp(220px, 22vw, 320px);
+    scroll-snap-align: start;
+  }
+  .strip-img {
+    position: relative;
+    aspect-ratio: 3/4; overflow: hidden;
+    background: #e8e8e8; margin-bottom: 18px;
+  }
+  .strip-img img {
+    width: 100%; height: 100%; object-fit: cover;
+    filter: grayscale(100%);
+    transition: filter .7s var(--ease), transform 1.4s var(--ease), opacity .7s var(--ease);
+  }
+  .strip-img .img-b {
+    position: absolute; inset: 0; opacity: 0;
+  }
+  .strip-card:hover .strip-img img { filter: grayscale(0); transform: scale(1.05); }
+  .strip-card:hover .strip-img .img-b { opacity: 1; }
+  .strip-detail {
+    position: absolute; top: 12px; right: 12px;
+    background: #fff; color: var(--ink);
+    padding: 4px 8px;
+    font-size: 10px; font-weight: 700;
+    letter-spacing: 0.16em; text-transform: uppercase;
+  }
+  .strip-title {
+    font-size: 14px; font-weight: 700;
+    text-transform: uppercase; letter-spacing: 0.06em;
+    margin-bottom: 6px; line-height: 1.25;
+  }
+  .strip-row {
+    display: flex; justify-content: space-between; align-items: baseline;
+  }
+  .strip-row .price {
+    font-family: 'Space Grotesk', monospace;
+    font-weight: 500; font-size: 14px;
+    letter-spacing: 0.02em;
+  }
+  .strip-row .cat {
+    color: var(--grey); font-size: 11px;
+    letter-spacing: 0.16em; text-transform: uppercase; font-weight: 500;
+  }
+
+  /* Technical Info Grid */
+  .tech {
+    padding: 140px 0; border-top: 1px solid var(--line);
+  }
+  .tech-grid {
+    display: grid; grid-template-columns: 4fr 8fr; gap: 80px;
+    align-items: start;
+  }
+  .tech-left {
+    position: sticky; top: 120px;
+  }
+  .tech-left .lbl {
+    color: var(--grey); margin-bottom: 24px; display: block;
+  }
+  .tech-left h2 {
+    font-family: 'Anton', sans-serif; font-weight: 400;
+    font-size: clamp(40px, 5vw, 88px);
+    line-height: 0.85; letter-spacing: -0.05em;
+    text-transform: uppercase; margin-bottom: 40px;
+  }
+  .tech-spec {
+    border-left: 2px solid var(--ink);
+    padding: 10px 0 10px 20px;
+    margin-bottom: 22px;
+  }
+  .tech-spec .k {
+    font-size: 10px; font-weight: 700;
+    letter-spacing: 0.24em; text-transform: uppercase;
+    color: var(--grey); margin-bottom: 4px;
+  }
+  .tech-spec .v {
+    font-size: 14px; line-height: 1.5;
+    color: var(--ink);
+  }
+  .tech-right {
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 24px;
+  }
+  .tech-img {
+    overflow: hidden; background: #e8e8e8;
+  }
+  .tech-img.tall { aspect-ratio: 4/5; }
+  .tech-img.square { aspect-ratio: 1/1; }
+  .tech-img.wide { aspect-ratio: 4/3; }
+  .tech-img:nth-child(1) { grid-column: 1; }
+  .tech-img:nth-child(2) { grid-column: 2; margin-top: 60px; }
+  .tech-img:nth-child(3) { grid-column: 1 / 3; }
+  .tech-img img {
+    width: 100%; height: 100%; object-fit: cover;
+    filter: grayscale(100%);
+    transition: filter .7s var(--ease), transform 1.4s var(--ease);
+  }
+  .tech-img:hover img { filter: grayscale(0); transform: scale(1.05); }
+
+  /* Live Inventory */
+  .inv {
+    padding: 140px 0; border-top: 1px solid var(--line);
+    position: relative;
+  }
+  .inv-grid {
+    display: grid; grid-template-columns: repeat(12, 1fr);
+    gap: 28px;
+  }
+  .inv-item {
+    display: flex; flex-direction: column;
+  }
+  .inv-item.a { grid-column: span 7; }
+  .inv-item.b { grid-column: span 5; margin-top: 80px; }
+  .inv-item.c { grid-column: span 4; margin-top: -40px; }
+  .inv-item.d { grid-column: span 5; }
+  .inv-item.e { grid-column: span 3; margin-top: 60px; }
+  .inv-img {
+    aspect-ratio: 4/3; overflow: hidden; background: #e8e8e8;
+    margin-bottom: 18px; position: relative;
+  }
+  .inv-img.tall { aspect-ratio: 3/4; }
+  .inv-img img {
+    width: 100%; height: 100%; object-fit: cover;
+    filter: grayscale(100%);
+    transition: filter .7s var(--ease), transform 1.4s var(--ease);
+  }
+  .inv-item:hover .inv-img img { filter: grayscale(0); transform: scale(1.05); }
+  .inv-name {
+    font-size: 18px; font-weight: 700;
+    text-transform: uppercase; letter-spacing: 0.04em;
+    margin-bottom: 8px;
+  }
+  .inv-sub {
+    color: var(--grey); font-size: 13px; margin-bottom: 14px;
+  }
+  .inv-sizes {
+    display: flex; gap: 16px; flex-wrap: wrap;
+  }
+  .inv-sizes span {
+    font-family: 'Space Grotesk', monospace;
+    font-size: 12px; letter-spacing: 0.1em;
+    color: var(--ink);
+  }
+  .inv-sizes span.out {
+    text-decoration: line-through; color: var(--grey);
+  }
+  .inv-status-dot {
+    display: inline-block; width: 8px; height: 8px;
+    border-radius: 50%; background: var(--red); margin-right: 8px;
+    animation: blink 1.6s ease-in-out infinite;
+  }
+  @keyframes blink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.3; }
+  }
+
+  /* Social Proof Masonry */
+  .social {
+    padding: 140px 0; border-top: 1px solid var(--line);
+    background: var(--concrete);
+  }
+  .social-cols {
+    column-count: 3; column-gap: 24px;
+  }
+  .social-card {
+    display: inline-block; width: 100%;
+    margin-bottom: 24px;
+    padding: 28px;
+    break-inside: avoid;
+    transition: transform .5s var(--ease);
+  }
+  .social-card.solid { background: #fff; }
+  .social-card.outline { background: transparent; border: 1px solid var(--ink); }
+  .social-card.r1 { transform: rotate(-1.5deg); }
+  .social-card.r2 { transform: rotate(2deg); }
+  .social-card.r3 { transform: rotate(-0.6deg); }
+  .social-card.r4 { transform: rotate(1.2deg); }
+  .social-card:hover { transform: rotate(0deg) scale(1.02); z-index: 2; }
+  .social-q {
+    font-family: 'Space Grotesk', monospace;
+    font-size: 15px; line-height: 1.45;
+    margin-bottom: 20px;
+  }
+  .social-h {
+    display: flex; align-items: center; gap: 10px;
+    font-size: 11px; font-weight: 700;
+    letter-spacing: 0.2em; text-transform: uppercase;
+  }
+  .social-h .dot {
+    width: 8px; height: 8px; border-radius: 50%; background: var(--ink);
+    display: inline-block;
+  }
+  .social-rate {
+    font-family: 'Space Grotesk', monospace;
+    font-size: 11px;
+    color: var(--grey); margin-left: auto;
+  }
+
+  /* Footer */
+  .ftr {
+    background: var(--ink); color: #fff;
+    padding: 120px 40px 0;
+    position: relative; overflow: hidden;
+  }
+  .ftr-grid {
+    max-width: 1480px; margin: 0 auto;
+    display: grid; grid-template-columns: repeat(6, 1fr);
+    gap: 60px; padding-bottom: 90px;
+  }
+  .ftr-brand { grid-column: span 2; }
+  .ftr-brand h3 {
+    font-family: 'Anton', sans-serif; font-weight: 400;
+    font-size: clamp(40px, 4.5vw, 72px); letter-spacing: -0.04em;
+    text-transform: uppercase; line-height: 0.85;
+    margin-bottom: 22px;
+  }
+  .ftr-brand p {
+    color: rgba(255,255,255,0.55);
+    font-size: 14px; line-height: 1.6;
+    max-width: 320px;
+  }
+  .ftr-col h4 {
+    color: rgba(255,255,255,0.5);
+    margin-bottom: 18px;
+  }
+  .ftr-col ul {
+    list-style: none; display: flex; flex-direction: column; gap: 10px;
+  }
+  .ftr-col a, .ftr-col li {
+    font-size: 13px; color: #fff;
+    letter-spacing: 0.04em;
+    transition: opacity .3s var(--ease);
+  }
+  .ftr-col a:hover { text-decoration: line-through; text-decoration-thickness: 2px; }
+  .ftr-bot {
+    max-width: 1480px; margin: 0 auto;
+    padding: 28px 0;
+    border-top: 1px solid rgba(255,255,255,0.1);
+    display: flex; justify-content: space-between;
+    flex-wrap: wrap; gap: 16px;
+    color: rgba(255,255,255,0.4);
+    position: relative; z-index: 2;
+  }
+  .ftr-bot-links { display: flex; gap: 24px; }
+  .ftr-anchor {
+    font-family: 'Anton', sans-serif; font-weight: 400;
+    font-size: 16vw; letter-spacing: -0.05em;
+    line-height: 0.85; text-transform: uppercase;
+    color: rgba(255,255,255,0.08);
+    text-align: center;
+    margin-top: 40px;
+    pointer-events: none;
+    user-select: none;
+    line-height: 0.78;
+  }
+
+  /* Reveal */
+  .reveal { opacity: 0; transform: translateY(40px); transition: opacity 1s var(--ease), transform 1s var(--ease); }
+  .reveal.in { opacity: 1; transform: translateY(0); }
+
+  /* Responsive */
+  @media (max-width: 1100px) {
+    .container { padding: 0 24px; }
+    .nav { padding: 20px 24px; }
+    .nav-links { margin-right: 80px; gap: 6px; }
+    .hero { padding: 180px 24px 80px; }
+    .hero-left { width: 100%; min-height: 50vh; }
+    .hero-right { position: relative; right: 0; top: 40px; width: 100%; height: 360px; }
+    .tech-grid { grid-template-columns: 1fr; gap: 48px; }
+    .tech-left { position: static; }
+    .tech-right { grid-template-columns: 1fr 1fr; }
+    .tech-img:nth-child(2) { margin-top: 0; }
+    .inv-grid { grid-template-columns: repeat(6, 1fr); gap: 24px; }
+    .inv-item.a { grid-column: span 6; }
+    .inv-item.b { grid-column: span 6; margin-top: 0; }
+    .inv-item.c { grid-column: span 6; margin-top: 0; }
+    .inv-item.d { grid-column: span 6; }
+    .inv-item.e { grid-column: span 6; margin-top: 0; }
+    .social-cols { column-count: 2; }
+    .ftr { padding: 100px 24px 0; }
+    .ftr-grid { grid-template-columns: repeat(3, 1fr); gap: 40px; }
+    .ftr-brand { grid-column: span 3; }
+  }
+  @media (max-width: 700px) {
+    .nav-links { display: none; }
+    .strip-track { padding: 4px 24px 24px; margin: 0 -24px; }
+    .section-head { flex-direction: column; align-items: start; gap: 16px; }
+    .section-head h2 { font-size: 16vw; }
+    .ftr-grid { grid-template-columns: 1fr 1fr; }
+    .social-cols { column-count: 1; }
+    .nav-cart { width: 52px; height: 52px; top: 16px; right: 16px; }
+  }
+</style>
+</head>
+<body>
+
+<header class="nav">
+  <div class="nav-brand-wrap">
+    <a href="#" class="nav-brand">WERKHUIS</a>
+    <span class="nav-sub">Est. 2018 / Amsterdam</span>
+  </div>
+  <ul class="nav-links">
+    <li><a href="#essentials">Essentials</a></li>
+    <li><a href="#tech">Architecture</a></li>
+    <li><a href="#inv">Inventory</a></li>
+    <li><a href="#proof">Field Reports</a></li>
+    <li><a href="#contact">Workshop</a></li>
+  </ul>
+</header>
+
+<a href="#contact" class="nav-cart" aria-label="Cart">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2 9h14"/><circle cx="9" cy="21" r="1.5"/><circle cx="18" cy="21" r="1.5"/></svg>
+  <span class="nav-cart-badge">3</span>
+</a>
+
+<section class="hero">
+  <div class="hero-left">
+    <h1 class="hero-h1 display">Heavy<br />house.<br />Tended<br />garden.</h1>
+    <p class="hero-sub">A workshop store for the long-life home. Dutch tulip bulbs, forged garden tools, and hand-thrown stoneware shipped from a brick workshop on the Singel.</p>
+    <a href="#essentials" class="ul-link">
+      Walk the catalogue
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+    </a>
+  </div>
+  <div class="hero-right">
+    <img src="https://images.unsplash.com/photo-1557804950-901398de43ba?w=1600&auto=format&fit=crop&q=80" alt="Tulip field in the Netherlands" />
+    <span class="hero-badge">Collection 004 / Spring</span>
+    <span class="hero-collection mono">— Bulbs · Tools · Stoneware · NL</span>
+  </div>
+</section>
+
+<section class="strip" id="essentials">
+  <div class="container">
+    <div class="section-head reveal">
+      <h2 class="display">Essentials, 06.</h2>
+      <p class="meta">Stocked daily. Shipped from Amsterdam within 48 hours of order. Free above €120.</p>
+    </div>
+  </div>
+  <div class="strip-track">
+    <article class="strip-card">
+      <div class="strip-img">
+        <img src="https://images.unsplash.com/photo-1773322524707-77c64c75247b?w=700&auto=format&fit=crop&q=80" alt="Heritage tulip bulbs" />
+        <img class="img-b" src="https://images.unsplash.com/photo-1557804950-901398de43ba?w=700&auto=format&fit=crop&q=80" alt="Tulip field reveal" />
+        <span class="strip-detail">24 Bulbs</span>
+      </div>
+      <h3 class="strip-title">Heritage Tulip Bulbs / N°04</h3>
+      <div class="strip-row"><span class="cat">Bulbs</span><span class="price">€28</span></div>
+    </article>
+    <article class="strip-card">
+      <div class="strip-img">
+        <img src="https://images.unsplash.com/photo-1523301551780-cd17359a95d0?w=700&auto=format&fit=crop&q=80" alt="Pruning shears with gloves" />
+        <img class="img-b" src="https://images.unsplash.com/photo-1537877853655-34bdcda5e833?w=700&auto=format&fit=crop&q=80" alt="Field spade detail" />
+        <span class="strip-detail">Forged Steel</span>
+      </div>
+      <h3 class="strip-title">Werkhuis Pruning Shears</h3>
+      <div class="strip-row"><span class="cat">Tools</span><span class="price">€84</span></div>
+    </article>
+    <article class="strip-card">
+      <div class="strip-img">
+        <img src="https://images.unsplash.com/photo-1631125915902-d8abe9225ff2?w=700&auto=format&fit=crop&q=80" alt="Three terracotta vessels" />
+        <img class="img-b" src="https://images.unsplash.com/photo-1612196808214-b8e1d6145a8c?w=700&auto=format&fit=crop&q=80" alt="Hand-thrown vase" />
+        <span class="strip-detail">Hand-Thrown</span>
+      </div>
+      <h3 class="strip-title">Stoneware Vessel / Trio</h3>
+      <div class="strip-row"><span class="cat">Stoneware</span><span class="price">€140</span></div>
+    </article>
+    <article class="strip-card">
+      <div class="strip-img">
+        <img src="https://images.unsplash.com/photo-1537877853655-34bdcda5e833?w=700&auto=format&fit=crop&q=80" alt="Forged garden spades" />
+        <img class="img-b" src="https://images.unsplash.com/photo-1523301551780-cd17359a95d0?w=700&auto=format&fit=crop&q=80" alt="Tool detail" />
+        <span class="strip-detail">Ash Handle</span>
+      </div>
+      <h3 class="strip-title">Field Spade · Forged</h3>
+      <div class="strip-row"><span class="cat">Tools</span><span class="price">€96</span></div>
+    </article>
+    <article class="strip-card">
+      <div class="strip-img">
+        <img src="https://images.unsplash.com/photo-1612196808214-b8e1d6145a8c?w=700&auto=format&fit=crop&q=80" alt="Hand-thrown ceramic vase" />
+        <img class="img-b" src="https://images.unsplash.com/photo-1631125915902-d8abe9225ff2?w=700&auto=format&fit=crop&q=80" alt="Vessel trio" />
+        <span class="strip-detail">Edition 12</span>
+      </div>
+      <h3 class="strip-title">Cottage Vase / Single</h3>
+      <div class="strip-row"><span class="cat">Stoneware</span><span class="price">€68</span></div>
+    </article>
+    <article class="strip-card">
+      <div class="strip-img">
+        <img src="https://images.unsplash.com/photo-1549859455-746ef4fae03b?w=700&auto=format&fit=crop&q=80" alt="Oak service spoons" />
+        <img class="img-b" src="https://images.unsplash.com/photo-1766431066919-9c11fbb6d3da?w=700&auto=format&fit=crop&q=80" alt="Kitchen in use" />
+        <span class="strip-detail">Oak / Pair</span>
+      </div>
+      <h3 class="strip-title">Oak Service Spoons</h3>
+      <div class="strip-row"><span class="cat">Kitchen</span><span class="price">€44</span></div>
+    </article>
+  </div>
+</section>
+
+<section class="tech" id="tech">
+  <div class="container">
+    <div class="tech-grid">
+      <div class="tech-left reveal">
+        <span class="lbl mono">— Architecture / 02</span>
+        <h2 class="display">Built<br />to outlast<br />the buyer.</h2>
+        <div class="tech-spec">
+          <div class="k">Material</div>
+          <div class="v">Hand-thrown stoneware, fired at 1,260°C in our Singel workshop. Lead-free, dishwasher-safe, made to be repaired.</div>
+        </div>
+        <div class="tech-spec">
+          <div class="k">Origin</div>
+          <div class="v">Bulbs from a fourth-generation grower in Lisse. Tools forged in Solingen, Germany. Wood turned in Amsterdam.</div>
+        </div>
+        <div class="tech-spec">
+          <div class="k">Service</div>
+          <div class="v">Lifetime sharpening on every tool. Stoneware replaced once, by reference, if it breaks within twelve years.</div>
+        </div>
+      </div>
+      <div class="tech-right">
+        <div class="tech-img tall reveal">
+          <img src="https://images.unsplash.com/photo-1631125915902-d8abe9225ff2?w=900&auto=format&fit=crop&q=80" alt="Stoneware detail" />
+        </div>
+        <div class="tech-img square reveal">
+          <img src="https://images.unsplash.com/photo-1549859455-746ef4fae03b?w=900&auto=format&fit=crop&q=80" alt="Oak spoon macro" />
+        </div>
+        <div class="tech-img wide reveal">
+          <img src="https://images.unsplash.com/photo-1766431066919-9c11fbb6d3da?w=1400&auto=format&fit=crop&q=80" alt="Workshop kitchen" />
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="inv" id="inv">
+  <div class="container">
+    <div class="section-head reveal">
+      <h2 class="display"><span class="inv-status-dot"></span>Live <em>inventory</em>.</h2>
+      <p class="meta">Stock counted twice daily from the Singel workshop. Sold size is struck through, not hidden.</p>
+    </div>
+    <div class="inv-grid">
+      <article class="inv-item a reveal">
+        <div class="inv-img">
+          <img src="https://images.unsplash.com/photo-1557804950-901398de43ba?w=1400&auto=format&fit=crop&q=80" alt="Tulip bouquet" />
+        </div>
+        <h3 class="inv-name">Lisse Tulip Mix · 36 bulbs</h3>
+        <p class="inv-sub">Four heritage varietals · Late March planting · Free shipping NL</p>
+        <div class="inv-sizes"><span>S · €34</span><span>M · €54</span><span class="out">L · €72</span><span>XL · €98</span></div>
+      </article>
+      <article class="inv-item b reveal">
+        <div class="inv-img tall">
+          <img src="https://images.unsplash.com/photo-1523301551780-cd17359a95d0?w=900&auto=format&fit=crop&q=80" alt="Pruning shears" />
+        </div>
+        <h3 class="inv-name">Pruning Shears · Heritage</h3>
+        <p class="inv-sub">Forged in Solingen. Replacement blade included.</p>
+        <div class="inv-sizes"><span>Right-hand</span><span class="out">Left-hand</span><span>+ Gloves €18</span></div>
+      </article>
+      <article class="inv-item c reveal">
+        <div class="inv-img">
+          <img src="https://images.unsplash.com/photo-1631125915902-d8abe9225ff2?w=900&auto=format&fit=crop&q=80" alt="Stoneware trio" />
+        </div>
+        <h3 class="inv-name">Stoneware Trio · Vessel 04</h3>
+        <p class="inv-sub">Three jars, kitchen counter set.</p>
+        <div class="inv-sizes"><span>Natural · €140</span><span class="out">Charred · €152</span></div>
+      </article>
+      <article class="inv-item d reveal">
+        <div class="inv-img">
+          <img src="https://images.unsplash.com/photo-1537877853655-34bdcda5e833?w=1200&auto=format&fit=crop&q=80" alt="Garden spades" />
+        </div>
+        <h3 class="inv-name">Field Spade · Forged</h3>
+        <p class="inv-sub">Ash handle, hand-finished. Lifetime sharpening included.</p>
+        <div class="inv-sizes"><span>Short · €96</span><span>Long · €112</span><span class="out">XL · €140</span></div>
+      </article>
+      <article class="inv-item e reveal">
+        <div class="inv-img tall">
+          <img src="https://images.unsplash.com/photo-1612196808214-b8e1d6145a8c?w=900&auto=format&fit=crop&q=80" alt="Hand-thrown vase" />
+        </div>
+        <h3 class="inv-name">Cottage Vase · Single</h3>
+        <p class="inv-sub">Edition of 12 per quarter.</p>
+        <div class="inv-sizes"><span>Cream · €68</span><span class="out">Charcoal · €72</span></div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<section class="social" id="proof">
+  <div class="container">
+    <div class="section-head reveal">
+      <h2 class="display">Field <em>reports.</em></h2>
+      <p class="meta">Letters from the growing season. Posted as received, lightly edited.</p>
+    </div>
+    <div class="social-cols">
+      <div class="social-card solid r1">
+        <p class="social-q">"The pruning shears arrived heavy in the hand. Six months in, they still feel new. Sharpened once. Asked for nothing else."</p>
+        <div class="social-h"><span class="dot"></span> @rosehill_gardens <span class="social-rate">★ 05 / 05</span></div>
+      </div>
+      <div class="social-card outline r2">
+        <p class="social-q">"Bulbs planted in October, in bloom by the second week of April. The varieties Werkhuis sent are the ones our grandmother would have grown."</p>
+        <div class="social-h"><span class="dot"></span> Jeanette V. · Utrecht <span class="social-rate">★ 05 / 05</span></div>
+      </div>
+      <div class="social-card solid r3">
+        <p class="social-q">"I bought one stoneware jar to test. I now own all twelve. There is something about the surface that I cannot stop looking at."</p>
+        <div class="social-h"><span class="dot"></span> @kitchen_signal <span class="social-rate">★ 05 / 05</span></div>
+      </div>
+      <div class="social-card outline r4">
+        <p class="social-q">"Solidly the most considered garden catalogue in the Low Countries right now. The shipping is over-engineered. The pricing is fair."</p>
+        <div class="social-h"><span class="dot"></span> Volkskrant Lifestyle <span class="social-rate">★ 05 / 05</span></div>
+      </div>
+      <div class="social-card solid r2">
+        <p class="social-q">"They sent a note with the seeds explaining how to read the moon calendar for planting. Eccentric. Useful. I keep it on the fridge."</p>
+        <div class="social-h"><span class="dot"></span> @longgrass_co <span class="social-rate">★ 05 / 05</span></div>
+      </div>
+      <div class="social-card outline r1">
+        <p class="social-q">"The oak spoons. We use them daily. They have taken on the color of the meals we make, which is what wood is supposed to do."</p>
+        <div class="social-h"><span class="dot"></span> Lukas B. · Berlin <span class="social-rate">★ 05 / 05</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer class="ftr" id="contact">
+  <div class="ftr-grid">
+    <div class="ftr-brand">
+      <h3 class="display">Werkhuis.</h3>
+      <p>A workshop store on the Singel. We sell only what we are willing to repair. Open by appointment, Tuesday through Saturday.</p>
+    </div>
+    <div class="ftr-col">
+      <h4 class="mono">— Shop</h4>
+      <ul>
+        <li><a href="#essentials">Bulbs</a></li>
+        <li><a href="#essentials">Tools</a></li>
+        <li><a href="#essentials">Stoneware</a></li>
+        <li><a href="#essentials">Kitchen</a></li>
+        <li><a href="#essentials">Editions</a></li>
+      </ul>
+    </div>
+    <div class="ftr-col">
+      <h4 class="mono">— Almanac</h4>
+      <ul>
+        <li><a href="#">Field journal</a></li>
+        <li><a href="#">Planting calendar</a></li>
+        <li><a href="#">Repair index</a></li>
+        <li><a href="#">Care manuals</a></li>
+      </ul>
+    </div>
+    <div class="ftr-col">
+      <h4 class="mono">— Contact</h4>
+      <ul>
+        <li><a href="mailto:atelier@werkhuis.nl">atelier@werkhuis.nl</a></li>
+        <li><a href="#">+31 20 000 0000</a></li>
+        <li>Singel 248</li>
+        <li>1016 AB Amsterdam</li>
+      </ul>
+    </div>
+    <div class="ftr-col">
+      <h4 class="mono">— Office</h4>
+      <ul>
+        <li>By appointment</li>
+        <li>Tue · Sat / 10–18</li>
+        <li>Closed in August</li>
+      </ul>
+    </div>
+  </div>
+  <div class="ftr-bot">
+    <span class="mono">© 2026 Werkhuis Atelier B.V. · KvK 81.000.000</span>
+    <div class="ftr-bot-links">
+      <a class="mono" href="#">Privacy</a>
+      <a class="mono" href="#">Terms</a>
+      <a class="mono" href="#">Returns</a>
+      <a class="mono" href="#">Shipping</a>
+    </div>
+  </div>
+  <div class="ftr-anchor display">HEAVY HOUSE.</div>
+</footer>
+
+<script>
+  const io = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.classList.add('in');
+        io.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.15 });
+  document.querySelectorAll('.reveal').forEach((el, i) => {
+    el.style.transitionDelay = ((i % 4) * 0.08) + 's';
+    io.observe(el);
+  });
+</script>
+</body>
+</html>
