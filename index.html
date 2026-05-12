@@ -441,6 +441,7 @@
     .portrait-large { width: 280px; height: 360px; margin: 0 auto; }
     .portrait-quote { text-align: center; max-width: 540px; margin: 0 auto; }
     .portrait-quote .quote-mark { text-align: center; }
+    .portrait-quote .quote-footer { display: none; }
   }
 
   /* RESULTS — same pattern but distinct numbering */
@@ -649,9 +650,15 @@
   /* Mobile CTA after proofs */
   .proofs-cta {
     display: flex; justify-content: center;
-    margin-top: 40px;
+    margin-top: 56px;
   }
-  .proofs-cta .pill-btn { padding: 14px 26px; }
+  .spin-badge-small {
+    position: relative; top: 0; right: 0;
+    width: 180px; height: 180px;
+  }
+  .spin-badge-small text { font-size: 11px; letter-spacing: 3px; }
+  .spin-badge-small .center { width: 56px; height: 56px; }
+  .spin-badge-small .center svg { width: 18px; height: 18px; }
   @media (min-width: 901px) {
     .proofs-cta { display: none; }
   }
@@ -817,10 +824,19 @@
       </div>
     </div>
     <div class="proofs-cta">
-      <a href="#oferta" class="pill-btn coral magnetic" data-hov>
-        Empezar ahora
-        <svg class="arr"><use href="#i-arrow"/></svg>
-      </a>
+      <div class="spin-badge spin-badge-small">
+        <svg viewBox="0 0 200 200">
+          <defs>
+            <path id="circle-sm" d="M 100, 100 m -75, 0 a 75,75 0 1,1 150,0 a 75,75 0 1,1 -150,0"/>
+          </defs>
+          <text>
+            <textPath href="#circle-sm">OPEN TO WORK · FREELANCE · GPMM ·&nbsp;</textPath>
+          </text>
+        </svg>
+        <a href="#oferta" class="center" data-hov aria-label="Empezar">
+          <svg viewBox="0 0 24 24"><use href="#i-arrow"/></svg>
+        </a>
+      </div>
     </div>
   </div>
 </section>
@@ -882,7 +898,7 @@
       <blockquote class="portrait-quote">
         <span class="quote-mark">"</span>
         <p>Vender es la vida de tu empresa; es ayudar a los demás a <span class="italic">mejorar su vida</span> con tu producto.</p>
-        <footer>— Ender M Rivero</footer>
+        <footer class="quote-footer">— Ender M Rivero</footer>
       </blockquote>
       <div class="portrait portrait-large" data-hov>
         <img src="ender.jpg" alt="Ender M Rivero" onerror="this.style.display='none'; this.parentNode.style.background='var(--surface)'; this.parentNode.insertAdjacentHTML('beforeend','<div style=&quot;position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-family:Clash Grotesk;font-size:160px;font-weight:600;color:var(--taupe);letter-spacing:-0.04em&quot;>EM</div>')" />
